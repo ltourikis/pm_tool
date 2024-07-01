@@ -3,25 +3,47 @@ from .base_page import BasePage
 
 
 class TaskPage(BasePage):
+    """
+    Page object model for the Tasks page.
+
+    Inherits from:
+        BasePage: A base class that includes common methods for all pages.
+    """
+
     def __init__(self, driver):
+        """
+        Initialize the Tasks Page with a WebDriver instance.
+        Tasks Page has increased custom delay compared to Base Page.
+        """
         super().__init__(driver)
-        self.custom_delay = 0.5
+        self.custom_delay = 0.5  # Set a custom delay for actions on this page
 
     labels = ["frontend", "backend", "design", "testing", "performance", "techdept", "ci", "jenkins"]
     status = ["TO DO", "IN PROGRESS", "DONE", "IN REVIEW"]
 
+    # Paths to files for uploading tasks
     file1_path = r"C:\Users\loukas\Scripts\pmtool_tests\pmtool\files_for_upload\file1.txt"
     file2_path = r"C:\Users\loukas\Scripts\pmtool_tests\pmtool\files_for_upload\file2.txt"
     file3_path = r"C:\Users\loukas\Scripts\pmtool_tests\pmtool\files_for_upload\file3.txt"
 
     def create_task(self, task_summary, task_description, status="", labels="", files=""):
+        """
+        Create a new task with the given details.
+
+        Args:
+            task_summary (str): The summary of the task.
+            task_description (str): The description of the task.
+            status (str, optional): The status of the task. Defaults to "".
+            labels (str, optional): The labels to be added to the task. Defaults to "".
+            files (str, optional): The files to be uploaded with the task. Defaults to "".
+        """
         self.wait_for_element(By.ID, "summary").send_keys(task_summary)
         self.wait_for_element(By.ID, "description").send_keys(task_description)
         if status:
             self.select_from_dropdown(".select-dropdown.dropdown-trigger", status)
         if labels:
             self.select_options_from_select_box("search_input", "optionContainer", labels)
-            self.wait_for_element(By.ID, "summary").click()
+            self.wait_for_element(By.ID, "summary").click()  # Click to close dropdown
         if files:
             for file in files:
                 self.upload_file("attachments", file)
@@ -29,6 +51,12 @@ class TaskPage(BasePage):
         self.wait_for_clickable(By.XPATH, "//button[contains(text(), 'Create')]").click()
 
     def click_edit_task(self, task_summary):
+        """
+        Click the edit button for a task with the given summary.
+
+        Args:
+            task_summary (str): The summary of the task to be edited.
+        """
         task = (f'//span[text()="{task_summary}"]/ancestor::div[contains(@class, "card")]/div['
                 f'@class="card-action"]/')
         self.wait_for_clickable(By.XPATH, task + 'a[@id="btn_update_task"]').click()
@@ -36,6 +64,18 @@ class TaskPage(BasePage):
 
     def edit_task(self, task_summary="", task_description="", status="", add_labels="", remove_labels="",
                   add_files="", remove_files=""):
+        """
+        Edit an existing task with the given details.
+
+        Args:
+            task_summary (str, optional): The new summary for the task. Defaults to "".
+            task_description (str, optional): The new description for the task. Defaults to "".
+            status (str, optional): The new status for the task. Defaults to "".
+            add_labels (str, optional): Labels to be added to the task. Defaults to "".
+            remove_labels (str, optional): Labels to be removed from the task. Defaults to "".
+            add_files (str, optional): Files to be added to the task. Defaults to "".
+            remove_files (str, optional): Files to be removed from the task. Defaults to "".
+        """
         if task_summary:
             self.wait_for_clickable(By.ID, "summary").clear()
             self.wait_for_element(By.ID, "summary").send_keys(task_summary)
@@ -46,35 +86,52 @@ class TaskPage(BasePage):
             self.select_from_dropdown(".select-dropdown.dropdown-trigger", status)
         if add_labels:
             self.select_options_from_select_box("search_input", "optionContainer", add_labels)
-            self.wait_for_element(By.ID, "summary").click()
+            self.wait_for_element(By.ID, "summary").click()  # Click to close dropdown
         if remove_labels:
             for label in remove_labels:
                 self.remove_label(label)
-                self.wait_for_clickable(By.ID, "summary").click()
+                self.wait_for_clickable(By.ID, "summary").click()  # Click to refresh state
         if add_files:
             for file in add_files:
                 self.upload_file("attachments", file)
-                self.wait_for_clickable(By.ID, "summary").click()
+                self.wait_for_clickable(By.ID, "summary").click()  # Click to refresh state
         if remove_files:
             for file in remove_files:
                 self.remove_file(file)
-                self.wait_for_clickable(By.ID, "summary").click()
+                self.wait_for_clickable(By.ID, "summary").click()  # Click to refresh state
         self.wait_for_clickable(By.XPATH, "//button[contains(text(), 'Update')]").click()
 
     def edit_summary_blank(self):
+        """
+        Clear the task summary and attempt to update the task.
+        """
         self.wait_for_clickable(By.ID, "summary").clear()
-        self.wait_for_element(By.ID, "description").click()
-        # time.sleep(5)
+        self.wait_for_element(By.ID, "description").click()  # Click to trigger any validation
         self.wait_for_clickable(By.XPATH, "//button[contains(text(), 'Update')]").click()
 
     def edit_description_blank(self):
+        """
+        Clear the task description and attempt to update the task.
+        """
         self.wait_for_clickable(By.ID, "description").clear()
-        self.wait_for_element(By.ID, "summary").click()
-        # time.sleep(5)
+        self.wait_for_element(By.ID, "summary").click()  # Click to trigger any validation
         self.wait_for_clickable(By.XPATH, "//button[contains(text(), 'Update')]").click()
 
     def check_if_task_present(self, task_summary, task_description, status_column, labels="", files=""):
-        column = self.wait_for_element(By.ID, f"{status_column.lower().replace(" ", "_")}_items")
+        """
+        Check if a task with the given details is present in the specified column.
+
+        Args:
+            task_summary (str): The summary of the task.
+            task_description (str): The description of the task.
+            status_column (str): The column where the task is expected to be.
+            labels (str, optional): The labels associated with the task. Defaults to "".
+            files (str, optional): The files associated with the task. Defaults to "".
+
+        Returns:
+            bool: True if the task is present, False otherwise.
+        """
+        column = self.wait_for_element(By.ID, f"{status_column.lower().replace(' ', '_')}_items")
         child_element = column.find_element(By.XPATH, f".//*[contains(text(), '{task_summary}')]")
         if not child_element:
             return False
@@ -93,22 +150,46 @@ class TaskPage(BasePage):
         return True
 
     def delete_task(self, task_summary):
+        """
+        Delete a task with the given summary.
+
+        Args:
+            task_summary (str): The summary of the task to be deleted.
+        """
         task = (f'//span[text()="{task_summary}"]/ancestor::div[contains(@class, "card")]/div['
                 f'@class="card-action"]/')
         self.wait_for_clickable(By.XPATH, task + 'a[@id="btn_delete_task"]').click()
         self.accept_alert()
 
     def cancel_delete_task(self, task_summary):
+        """
+        Cancel the deletion of a task with the given summary.
+
+        Args:
+            task_summary (str): The summary of the task whose deletion is to be canceled.
+        """
         task = (f'//span[text()="{task_summary}"]/ancestor::div[contains(@class, "card")]/div['
                 f'@class="card-action"]/')
         self.wait_for_clickable(By.XPATH, task + 'a[@id="btn_delete_task"]').click()
         self.dismiss_alert()
 
     def remove_label(self, label):
+        """
+        Remove a label from a task.
+
+        Args:
+            label (str): The label to be removed.
+        """
         element = self.wait_for_element(By.XPATH, f"//span[contains(text(), '{label}')]")
         element.find_element(By.XPATH, ".//img[contains(@class, 'icon_cancel')]").click()
 
     def remove_file(self, file):
+        """
+        Remove a file from a task.
+
+        Args:
+            file (str): The file to be removed.
+        """
         file_name = file.split("\\")[-1]
         element = self.wait_for_element(By.XPATH, f"//span[contains(text(), '{file_name}')]")
         element.find_element(By.XPATH, ".//i[contains(text(), 'delete_forever')]").click()

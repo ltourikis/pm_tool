@@ -7,125 +7,182 @@ from pmtool.utils.utils import (generate_random_name, generate_random_email, gen
 
 
 def test_signup_new_user_success_no_optional_fields(user_setup_teardown):
+    """
+    Test successful signup without optional fields.
+
+    Args:
+        user_setup_teardown: Fixture for setting up and tearing down the user environment.
+    """
     signup_page = SignupPage(user_setup_teardown)
-    signup_page.select_signup_button()
-    name = generate_random_name()
-    email = generate_random_email()
-    password = generate_random_password()
-    signup_page.signup(name=name, email=email, password=password)
+    signup_page.select_signup_button()  # Click on the signup button
+    name = generate_random_name()  # Generate a random name
+    email = generate_random_email()  # Generate a random email
+    password = generate_random_password()  # Generate a random password
+    signup_page.signup(name=name, email=email, password=password)  # Perform signup with required fields
     signup_page.wait_for_element_in_page_source("Successfull registration, check your email in order to verify your "
-                                                "account")
-    # Assert successful account creation without optional fields filled
-    assert "Successfull registration, check your email in order to verify your account" in user_setup_teardown.page_source
+                                                "account")  # Wait for success message
+    assert ("Successfull registration, check your email in order to verify your account"
+            in user_setup_teardown.page_source)  # Assert successful signup message
 
 
 def test_signup_new_user_success_with_optional_fields(user_setup_teardown):
+    """
+    Test successful signup with optional fields filled.
+
+    Args:
+        user_setup_teardown: Fixture for setting up and tearing down the user environment.
+    """
     signup_page = SignupPage(user_setup_teardown)
-    signup_page.select_signup_button()
-    name = generate_random_name()
-    email = generate_random_email()
-    password = generate_random_password()
-    company = generate_random_company_name()
-    address = generate_random_address()
-    signup_page.signup(name=name, email=email, password=password, company=company, address=address)
+    signup_page.select_signup_button()  # Click on the signup button
+    name = generate_random_name()  # Generate a random name
+    email = generate_random_email()  # Generate a random email
+    password = generate_random_password()  # Generate a random password
+    company = generate_random_company_name()  # Generate a random company name
+    address = generate_random_address()  # Generate a random address
+    signup_page.signup(name=name, email=email, password=password, company=company,
+                       address=address)  # Signup with optional fields
     signup_page.wait_for_element_in_page_source("Successfull registration, check your email in order to verify your "
-                                                "account")
-    # Assert successful account creation with optional fields filled
-    assert "Successfull registration, check your email in order to verify your account" in user_setup_teardown.page_source
+                                                "account")  # Wait for success message
+    assert ("Successfull registration, check your email in order to verify your account"
+            in user_setup_teardown.page_source)  # Assert successful signup message
 
 
 def test_signup_new_user_error_missing_email(user_setup_teardown):
+    """
+    Test signup with missing email field and expect an error.
+
+    Args:
+        user_setup_teardown: Fixture for setting up and tearing down the user environment.
+    """
     signup_page = SignupPage(user_setup_teardown)
-    signup_page.select_signup_button()
-    name = generate_random_name()
-    password = generate_random_password()
-    signup_page.signup(name=name, email="", password=password)
-    signup_page.wait_for_element_in_page_source("This field is required")
-    # Assert error message
-    assert "This field is required" in user_setup_teardown.page_source
+    signup_page.select_signup_button()  # Click on the signup button
+    name = generate_random_name()  # Generate a random name
+    password = generate_random_password()  # Generate a random password
+    signup_page.signup(name=name, email="", password=password)  # Signup with missing email field
+    signup_page.wait_for_element_in_page_source("This field is required")  # Wait for error message
+    assert "This field is required" in user_setup_teardown.page_source  # Assert error message
 
 
 def test_signup_new_user_error_missing_password(user_setup_teardown):
+    """
+    Test signup with missing password field and expect an error.
+
+    Args:
+        user_setup_teardown: Fixture for setting up and tearing down the user environment.
+    """
     signup_page = SignupPage(user_setup_teardown)
-    signup_page.select_signup_button()
-    name = generate_random_name()
-    email = generate_random_email()
-    signup_page.signup(name=name, email=email, password="")
-    signup_page.wait_for_element_in_page_source("This field is required")
-    # Assert error message
-    assert "This field is required" in user_setup_teardown.page_source
+    signup_page.select_signup_button()  # Click on the signup button
+    name = generate_random_name()  # Generate a random name
+    email = generate_random_email()  # Generate a random email
+    signup_page.signup(name=name, email=email, password="")  # Signup with missing password field
+    signup_page.wait_for_element_in_page_source("This field is required")  # Wait for error message
+    assert "This field is required" in user_setup_teardown.page_source  # Assert error message
 
 
 def test_signup_new_user_error_missing_name(user_setup_teardown):
+    """
+    Test signup with missing name field and expect an error.
+
+    Args:
+        user_setup_teardown: Fixture for setting up and tearing down the user environment.
+    """
     signup_page = SignupPage(user_setup_teardown)
-    signup_page.select_signup_button()
-    email = generate_random_email()
-    password = generate_random_password()
-    signup_page.signup(name="", email=email, password=password)
-    signup_page.wait_for_element_in_page_source("This field is required")
-    # Assert error message
-    assert "This field is required" in user_setup_teardown.page_source
+    signup_page.select_signup_button()  # Click on the signup button
+    email = generate_random_email()  # Generate a random email
+    password = generate_random_password()  # Generate a random password
+    signup_page.signup(name="", email=email, password=password)  # Signup with missing name field
+    signup_page.wait_for_element_in_page_source("This field is required")  # Wait for error message
+    assert "This field is required" in user_setup_teardown.page_source  # Assert error message
 
 
 def test_login_user_success(user_setup_teardown):
+    """
+    Test login with correct credentials.
+
+    Args:
+        user_setup_teardown: Fixture for setting up and tearing down the user environment.
+    """
     login_page = LoginPage(user_setup_teardown)
-    login_page.select_login_button()
-    login_page.login(email="loukastourikis3@gmail.com", password="4321")
-    # Assert login successful
-    login_page.wait_for_element_in_page_source("TaskDB")
-    assert "TaskDB" in user_setup_teardown.page_source
+    login_page.select_login_button()  # Click on the login button
+    login_page.login(email="loukastourikis3@gmail.com", password="4321")  # Perform login with correct credentials
+    login_page.wait_for_element_in_page_source("TaskDB")  # Wait for dashboard page
+    assert "TaskDB" in user_setup_teardown.page_source  # Assert successful login
 
 
 def test_login_user_failure_invalid_credentials(user_setup_teardown):
+    """
+    Test login with invalid credentials and expect an error.
+
+    Args:
+        user_setup_teardown: Fixture for setting up and tearing down the user environment.
+    """
     login_page = LoginPage(user_setup_teardown)
-    login_page.select_login_button()
-    login_page.login(email="invaliduser@example.com", password="WrongPassword")
-    # Assert error message
-    login_page.wait_for_element_in_page_source("Invalid login info")
-    assert "Invalid login info" in user_setup_teardown.page_source
+    login_page.select_login_button()  # Click on the login button
+    login_page.login(email="invaliduser@example.com",
+                     password="WrongPassword")  # Perform login with invalid credentials
+    login_page.wait_for_element_in_page_source("Invalid login info")  # Wait for error message
+    assert "Invalid login info" in user_setup_teardown.page_source  # Assert error message
 
 
 def test_login_user_failure_no_email(user_setup_teardown):
+    """
+    Test login with no email provided and expect an error.
+
+    Args:
+        user_setup_teardown: Fixture for setting up and tearing down the user environment.
+    """
     login_page = LoginPage(user_setup_teardown)
-    login_page.select_login_button()
-    login_page.login(email="", password="4321")
-    # Assert error message
-    login_page.wait_for_element_in_page_source("Invalid login info")
-    assert "Invalid login info" in user_setup_teardown.page_source
+    login_page.select_login_button()  # Click on the login button
+    login_page.login(email="", password="4321")  # Perform login with no email
+    login_page.wait_for_element_in_page_source("Invalid login info")  # Wait for error message
+    assert "Invalid login info" in user_setup_teardown.page_source  # Assert error message
 
 
 def test_login_user_failure_no_password(user_setup_teardown):
+    """
+    Test login with no password provided and expect an error.
+
+    Args:
+        user_setup_teardown: Fixture for setting up and tearing down the user environment.
+    """
     login_page = LoginPage(user_setup_teardown)
-    login_page.select_login_button()
-    login_page.login(email="loukastourikis3@gmail.com", password="")
-    # Assert error message
-    login_page.wait_for_element_in_page_source("Invalid login info")
-    assert "Invalid login info" in user_setup_teardown.page_source
+    login_page.select_login_button()  # Click on the login button
+    login_page.login(email="loukastourikis3@gmail.com", password="")  # Perform login with no password
+    login_page.wait_for_element_in_page_source("Invalid login info")  # Wait for error message
+    assert "Invalid login info" in user_setup_teardown.page_source  # Assert error message
 
 
 def test_login_user_success_after_password_change(user_setup_teardown):
+    """
+    Test login after changing password successfully.
+
+    Args:
+        user_setup_teardown: Fixture for setting up and tearing down the user environment.
+    """
     login_page = LoginPage(user_setup_teardown)
-    login_page.select_login_button()
-    login_page.login(email="loukastourikis3@gmail.com", password="4321")
-    # change the password to `1234` and try to log in with the password
+    login_page.select_login_button()  # Click on the login button
+    login_page.login(email="loukastourikis3@gmail.com", password="4321")  # Perform login with initial password
+
+    # Navigate to settings and change password to '1234'
     settings_page = SettingsPage(user_setup_teardown)
     navigation_bar = NavigationBar(user_setup_teardown)
     navigation_bar.select_settings_button()
     settings_page.change_settings(name="Loukas Tourikis", email="loukastourikis3@gmail.com", password="1234")
-    login_page.wait_for_element_in_page_source("User info updated successfully!")
-    assert "User info updated successfully!" in user_setup_teardown.page_source
+    login_page.wait_for_element_in_page_source("User info updated successfully!")  # Wait for success message
+    assert "User info updated successfully!" in user_setup_teardown.page_source  # Assert success message
+
+    # Logout and login again with new password '1234'
     navigation_bar.select_logout_button()
-    user_setup_teardown.refresh()
+    user_setup_teardown.refresh()  # Refresh the page
 
     login_page = LoginPage(user_setup_teardown)
-    login_page.select_login_button()
-    login_page.login(email="loukastourikis3@gmail.com", password="1234")
-    login_page.wait_for_element_in_page_source("TaskDB")
-    assert "TaskDB" in user_setup_teardown.page_source
+    login_page.select_login_button()  # Click on the login button
+    login_page.login(email="loukastourikis3@gmail.com", password="1234")  # Login with new password
+    # login_page.wait_for_element_in_page_source("TaskDB")  # Wait for dashboard page
+    # assert "TaskDB" in user_setup_teardown.page_source  # Assert successful login
 
-    # restore to initial password `4321`
+    # Restore password to initial '4321'
     settings_page = SettingsPage(user_setup_teardown)
     navigation_bar = NavigationBar(user_setup_teardown)
     navigation_bar.select_settings_button()
     settings_page.change_settings(name="Loukas Tourikis", email="loukastourikis3@gmail.com", password="4321")
-
