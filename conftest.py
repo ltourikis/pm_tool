@@ -22,14 +22,17 @@ def general_setup_teardown():
     - Yields the WebDriver instance to the tests.
     - Quits the WebDriver session after the tests are completed.
     """
+    # Initialize WebDriver using ChromeDriverManager for automatic management of ChromeDriver
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
     driver.maximize_window()
     # driver = webdriver.Chrome()  # Ensure chromedriver is in your PATH
     driver.get("https://pm-tool-e63fa77e3353.herokuapp.com")
+    # Perform login
     login_page = LoginPage(driver)
     login_page.select_login_button()
     login_page.login(email="loukastourikis3@gmail.com", password="4321")
     yield driver
+    # Quit the WebDriver session
     driver.quit()
 
 
@@ -46,11 +49,13 @@ def user_setup_teardown():
     - Yields the WebDriver instance to the tests.
     - Quits the WebDriver session after the tests are completed.
     """
+    # Initialize WebDriver using ChromeDriverManager for automatic management of ChromeDriver
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
     driver.maximize_window()
     # driver = webdriver.Chrome()  # Ensure chromedriver is in your PATH
     driver.get("https://pm-tool-e63fa77e3353.herokuapp.com")
     yield driver
+    # Quit the WebDriver session
     driver.quit()
 
 
@@ -68,21 +73,25 @@ def task_setup():
     - Yields the WebDriver instance to the tests.
     - Quits the WebDriver session after the tests are completed.
     """
+    # Initialize WebDriver using ChromeDriverManager for automatic management of ChromeDriver
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
     driver.maximize_window()
     # driver = webdriver.Chrome()  # Ensure chromedriver is in your PATH
     driver.get("https://pm-tool-e63fa77e3353.herokuapp.com")
+    # Perform login
     login_page = LoginPage(driver)
     login_page.select_login_button()
     login_page.login(email="loukastourikis3@gmail.com", password="4321")
 
+    # Create a project for task management
     project_page = ProjectPage(driver)
     project_page.add_project("ForTaskManagement", "For Task Management")
     project_page.wait_for_element_in_page_source("ForTaskManagement")
     assert "ForTaskManagement" in driver.page_source
 
     yield driver
-    # project_page.delete_project("ForTaskManagement")
+    # Uncomment the following line to delete the project after tests are completed
+    project_page.delete_project("ForTaskManagement")
     driver.quit()
 
 
@@ -96,6 +105,7 @@ def task_teardown(task_setup):
     - After tests complete, navigates back to the dashboard using the navigation bar.
     """
     yield task_setup
+    # Navigate back to the dashboard
     navigation_bar = NavigationBar(task_setup)
     navigation_bar.select_dashboard_button()
 
@@ -113,18 +123,22 @@ def settings_setup():
     - Yields the WebDriver instance to the tests.
     - Quits the WebDriver session after the tests are completed.
     """
+    # Initialize WebDriver using ChromeDriverManager for automatic management of ChromeDriver
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
     driver.maximize_window()
     # driver = webdriver.Chrome()  # Ensure chromedriver is in your PATH
     driver.get("https://pm-tool-e63fa77e3353.herokuapp.com")
+    # Perform login
     login_page = LoginPage(driver)
     login_page.select_login_button()
     login_page.login(email="loukastourikis3@gmail.com", password="4321")
 
+    # Navigate to the settings page
     navigation_bar = NavigationBar(driver)
     navigation_bar.select_settings_button()
 
     yield driver
+    # Quit the WebDriver session
     driver.quit()
 
 
@@ -138,6 +152,7 @@ def change_email_teardown(settings_setup):
     - After tests complete, changes the email setting back to the original.
     """
     yield settings_setup
+    # Change email settings back to the original
     settings_page = SettingsPage(settings_setup)
     settings_page.change_settings(email="loukastourikis3@gmail.com", password="4321")
 
@@ -152,6 +167,7 @@ def change_password_teardown(settings_setup):
     - After tests complete, navigates to the settings page and changes the password setting back to the original.
     """
     yield settings_setup
+    # Navigate to the settings page and change password settings back to the original
     navigation_bar = NavigationBar(settings_setup)
     navigation_bar.select_settings_button()
     settings_page = SettingsPage(settings_setup)
@@ -168,6 +184,7 @@ def change_2fa_teardown(settings_setup):
     - After tests complete, navigates to the settings page and changes the 2FA setting back to the original state.
     """
     yield settings_setup
+    # Navigate to the settings page and change 2FA settings back to the original state
     navigation_bar = NavigationBar(settings_setup)
     navigation_bar.select_settings_button()
     settings_page = SettingsPage(settings_setup)
@@ -179,12 +196,20 @@ def taskdb_setup_teardown():
     """
     Fixture for setting up and tearing down the WebDriver session specifically for TaskDB-related tests.
 
-
+    This fixture:
+    - Initializes a WebDriver instance using ChromeDriver with the WebDriver Manager.
+    - Maximizes the browser window.
+    - Logs into the PM Tool application.
+    - Creates multiple projects and tasks for TaskDB tests.
+    - Yields the WebDriver instance to the tests.
+    - Quits the WebDriver session after the tests are completed.
     """
+    # Initialize WebDriver using ChromeDriverManager for automatic management of ChromeDriver
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
     driver.maximize_window()
     # driver = webdriver.Chrome()  # Ensure chromedriver is in your PATH
     driver.get("https://pm-tool-e63fa77e3353.herokuapp.com")
+    # Perform login
     login_page = LoginPage(driver)
     navigation_bar = NavigationBar(driver)
     project_page = ProjectPage(driver)
@@ -193,6 +218,7 @@ def taskdb_setup_teardown():
     login_page.select_login_button()
     login_page.login(email="loukastourikis3@gmail.com", password="4321")
 
+    # Create projects for TaskDB tests
     project_page.add_project("ForTaskDBTests1", "For Testing Purposes 1")
     project_page.wait_for_element_in_page_source("ForTaskDBTests1")  # Create a project
     assert "ForTaskDBTests1" in driver.page_source
@@ -200,16 +226,15 @@ def taskdb_setup_teardown():
     project_page.wait_for_element_in_page_source("ForTaskDBTests2")  # Create a second project
     assert "ForTaskDBTests2" in driver.page_source
 
-    # Create a few tasks
+    # Create tasks within the projects
     for task in ["A_Task", "Z_Task"]:
         project_page.add_task("ForTaskDBTests1")
-        task_page.create_task(task, f"{task} Description")  # Add a task
+        task_page.create_task(task, f"{task} Description")
         navigation_bar.select_dashboard_button()
     for task in ["B_Task", "$_Task"]:
         project_page.add_task("ForTaskDBTests2")
-        task_page.create_task(task, f"{task} Description")  # Add a task
+        task_page.create_task(task, f"{task} Description")
         navigation_bar.select_dashboard_button()
 
     yield driver
-    # project_page.delete_project("ForTaskManagement")
     driver.quit()
