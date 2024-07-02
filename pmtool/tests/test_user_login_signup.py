@@ -178,8 +178,6 @@ def test_login_user_after_password_change_successful(user_setup_teardown):
     login_page = LoginPage(user_setup_teardown)
     login_page.select_login_button()  # Click on the login button
     login_page.login(email="loukastourikis3@gmail.com", password="1234")  # Login with new password
-    # login_page.wait_for_element_in_page_source("TaskDB")  # Wait for dashboard page
-    # assert "TaskDB" in user_setup_teardown.page_source  # Assert successful login
 
     # Restore password to initial '4321'
     settings_page = SettingsPage(user_setup_teardown)

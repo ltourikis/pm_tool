@@ -90,7 +90,7 @@ class ProjectPage(BasePage):
 
     def add_task(self, project_name):
         """
-        Add a task to a project by name.
+        Clicks the Add Task button to the relevant project.
 
         Args:
             project_name (str): The name of the project to add a task to.

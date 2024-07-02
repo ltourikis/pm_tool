@@ -27,6 +27,7 @@ class BasePage:
         """
         Wait for the page to fully load.
         """
+        time.sleep(self.custom_delay)
         try:
             WebDriverWait(self.driver, timeout).until(
                 lambda d: d.execute_script("return document.readyState") == "complete"

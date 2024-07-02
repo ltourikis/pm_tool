@@ -30,6 +30,6 @@ class NavigationBar(BasePage):
 
     def select_tasks_db_button(self):
         """
-        Click the tasks database button in the navigation bar to navigate to the tasks database.
+        Click the tasks database button in the navigation bar to navigate to the task database.
         """
-        self.wait_for_clickable(By.ID, "tasks_db").click()
+        self.wait_for_clickable(By.ID, "task_db").click()

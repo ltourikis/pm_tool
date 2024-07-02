@@ -12,7 +12,7 @@ def test_add_task_required_fields_successful(task_setup, task_teardown):
         task_teardown: Fixture for tearing down the test environment.
     """
     project_page = ProjectPage(task_setup)
-    project_page.add_task("ForTaskManagement")  # Create a project for task management
+    project_page.add_task("ForTaskManagement")  # Click add task on the ForTaskManagement project
 
     task_page = TaskPage(task_setup)
     task_page.create_task("Task1", "Task1 Description")  # Add a task with required fields
@@ -29,7 +29,7 @@ def test_add_task_status_to_do_successful(task_setup, task_teardown):
         task_teardown: Fixture for tearing down the test environment.
     """
     project_page = ProjectPage(task_setup)
-    project_page.add_task("ForTaskManagement")  # Create a project for task management
+    project_page.add_task("ForTaskManagement")  # Click add task on the ForTaskManagement project
 
     task_page = TaskPage(task_setup)
     task_page.create_task("Task2", "Task2 Description", "TO DO")  # Add a task with 'TO DO' status
@@ -46,7 +46,7 @@ def test_add_task_status_in_progress_successful(task_setup, task_teardown):
         task_teardown: Fixture for tearing down the test environment.
     """
     project_page = ProjectPage(task_setup)
-    project_page.add_task("ForTaskManagement")  # Create a project for task management
+    project_page.add_task("ForTaskManagement")  # Click add task on the ForTaskManagement project
 
     task_page = TaskPage(task_setup)
     task_page.create_task("Task3", "Task3 Description", "IN PROGRESS")  # Add a task with 'IN PROGRESS' status
@@ -63,7 +63,7 @@ def test_add_task_status_in_review_successful(task_setup, task_teardown):
         task_teardown: Fixture for tearing down the test environment.
     """
     project_page = ProjectPage(task_setup)
-    project_page.add_task("ForTaskManagement")  # Create a project for task management
+    project_page.add_task("ForTaskManagement")  # Click add task on the ForTaskManagement project
 
     task_page = TaskPage(task_setup)
     task_page.create_task("Task4", "Task4 Description", "IN REVIEW")  # Add a task with 'IN REVIEW' status
@@ -80,7 +80,7 @@ def test_add_task_status_done_successful(task_setup, task_teardown):
         task_teardown: Fixture for tearing down the test environment.
     """
     project_page = ProjectPage(task_setup)
-    project_page.add_task("ForTaskManagement")  # Create a project for task management
+    project_page.add_task("ForTaskManagement")  # Click add task on the ForTaskManagement project
 
     task_page = TaskPage(task_setup)
     task_page.create_task("Task5", "Task5 Description", "DONE")  # Add a task with 'DONE' status
@@ -97,7 +97,7 @@ def test_add_task_random_labels_successful(task_setup, task_teardown):
         task_teardown: Fixture for tearing down the test environment.
     """
     project_page = ProjectPage(task_setup)
-    project_page.add_task("ForTaskManagement")  # Create a project for task management
+    project_page.add_task("ForTaskManagement")  # Click add task on the ForTaskManagement project
 
     task_page = TaskPage(task_setup)
     random_labels = generate_random_sublist(task_page.labels)  # Generate random labels
@@ -118,7 +118,7 @@ def test_add_task_all_labels_successful(task_setup, task_teardown):
         task_teardown: Fixture for tearing down the test environment.
     """
     project_page = ProjectPage(task_setup)
-    project_page.add_task("ForTaskManagement")  # Create a project for task management
+    project_page.add_task("ForTaskManagement")  # Click add task on the ForTaskManagement project
 
     task_page = TaskPage(task_setup)
     random_status = generate_random_sublist(task_page.status)[0]  # Generate random status
@@ -138,7 +138,7 @@ def test_add_task_upload_one_file_successful(task_setup, task_teardown):
         task_teardown: Fixture for tearing down the test environment.
     """
     project_page = ProjectPage(task_setup)
-    project_page.add_task("ForTaskManagement")  # Create a project for task management
+    project_page.add_task("ForTaskManagement")  # Click add task on the ForTaskManagement project
 
     task_page = TaskPage(task_setup)
     random_status = generate_random_sublist(task_page.status)[0]  # Generate random status
@@ -160,7 +160,7 @@ def test_add_task_upload_two_files_successful(task_setup, task_teardown):
         task_teardown: Fixture for tearing down the test environment.
     """
     project_page = ProjectPage(task_setup)
-    project_page.add_task("ForTaskManagement")  # Create a project for task management
+    project_page.add_task("ForTaskManagement")  # Click add task on the ForTaskManagement project
 
     task_page = TaskPage(task_setup)
     random_status = generate_random_sublist(task_page.status)[0]  # Generate random status
@@ -182,7 +182,7 @@ def test_add_task_missing_summary_failure(task_setup, task_teardown):
         task_teardown: Fixture for tearing down the test environment.
     """
     project_page = ProjectPage(task_setup)
-    project_page.add_task("ForTaskManagement")  # Create a project for task management
+    project_page.add_task("ForTaskManagement")  # Click add task on the ForTaskManagement project
 
     task_page = TaskPage(task_setup)
     random_status = generate_random_sublist(task_page.status)[0]  # Generate random status
@@ -201,7 +201,7 @@ def test_add_task_missing_description_failure(task_setup, task_teardown):
         task_teardown: Fixture for tearing down the test environment.
     """
     project_page = ProjectPage(task_setup)
-    project_page.add_task("ForTaskManagement")  # Create a project for task management
+    project_page.add_task("ForTaskManagement")  # Click add task on the ForTaskManagement project
 
     task_page = TaskPage(task_setup)
     random_status = generate_random_sublist(task_page.status)[0]  # Generate random status
@@ -279,7 +279,7 @@ def test_edit_task_successful(task_setup, task_teardown):
         task_teardown: Fixture for tearing down the test environment.
     """
     project_page = ProjectPage(task_setup)
-    project_page.add_task("ForTaskManagement")  # Create a project for task management
+    project_page.add_task("ForTaskManagement")  # Click add task on the ForTaskManagement project
 
     task_page = TaskPage(task_setup)
     files_list = [task_page.file1_path]  # Specify initial file
