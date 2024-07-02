@@ -1,5 +1,6 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
+*.pyc
 *.py[cod]
 *$py.class
 
@@ -151,3 +152,6 @@ assets/
 # Custom user settings
 *.env
 .env.*
+__pycache__/
+*.pyc
+*.py[cod]
