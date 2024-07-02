@@ -1,5 +1,7 @@
+import time
 from selenium.webdriver.common.by import By
 from .base_page import BasePage
+from selenium.webdriver.common.keys import Keys
 
 
 class SettingsPage(BasePage):
@@ -80,3 +82,27 @@ class SettingsPage(BasePage):
             '2fa': is_checked(self.driver, "has2fa")
         }
         return settings
+
+    def edit_name_to_blank(self):
+        """
+        Clear name and attempt to update Settings.
+        """
+        self.wait_for_element(By.ID, "fullName").clear()
+        self.wait_for_element(By.ID, "email").click()  # Click to trigger any validation
+        self.wait_for_element(By.CSS_SELECTOR, '.btn.waves-effect.waves-light').click()
+
+    def edit_email_to_blank(self):
+        """
+        Clear email and attempt to update Settings.
+        """
+        self.wait_for_clickable(By.ID, "email").clear()
+        self.wait_for_element(By.ID, "fullName").click()  # Click to trigger any validation
+        self.wait_for_element(By.CSS_SELECTOR, '.btn.waves-effect.waves-light').click()
+
+    def edit_password_to_blank(self):
+        """
+        Clear password and attempt to update Settings.
+        """
+        self.wait_for_clickable(By.ID, "password").clear()
+        self.wait_for_element(By.ID, "fullName").click()  # Click to trigger any validation
+        self.wait_for_element(By.CSS_SELECTOR, '.btn.waves-effect.waves-light').click()

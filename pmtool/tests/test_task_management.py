@@ -3,7 +3,7 @@ from pmtool.pages.project_page import ProjectPage
 from pmtool.utils.utils import generate_random_sublist
 
 
-def test_add_task_required_fields_success(task_setup, task_teardown):
+def test_add_task_required_fields_successful(task_setup, task_teardown):
     """
     Test adding a task with required fields only.
 
@@ -20,7 +20,7 @@ def test_add_task_required_fields_success(task_setup, task_teardown):
     assert task_page.check_if_task_present("Task1", "Task1 Description", "TO DO")  # Verify the task is present
 
 
-def test_add_task_status_to_do_success(task_setup, task_teardown):
+def test_add_task_status_to_do_successful(task_setup, task_teardown):
     """
     Test adding a task with 'TO DO' status.
 
@@ -37,7 +37,7 @@ def test_add_task_status_to_do_success(task_setup, task_teardown):
     assert task_page.check_if_task_present("Task2", "Task2 Description", "TO DO")  # Verify the task is present
 
 
-def test_add_task_status_in_progress_success(task_setup, task_teardown):
+def test_add_task_status_in_progress_successful(task_setup, task_teardown):
     """
     Test adding a task with 'IN PROGRESS' status.
 
@@ -54,7 +54,7 @@ def test_add_task_status_in_progress_success(task_setup, task_teardown):
     assert task_page.check_if_task_present("Task3", "Task3 Description", "IN PROGRESS")  # Verify the task is present
 
 
-def test_add_task_status_in_review_success(task_setup, task_teardown):
+def test_add_task_status_in_review_successful(task_setup, task_teardown):
     """
     Test adding a task with 'IN REVIEW' status.
 
@@ -71,7 +71,7 @@ def test_add_task_status_in_review_success(task_setup, task_teardown):
     assert task_page.check_if_task_present("Task4", "Task4 Description", "IN REVIEW")  # Verify the task is present
 
 
-def test_add_task_status_done_success(task_setup, task_teardown):
+def test_add_task_status_done_successful(task_setup, task_teardown):
     """
     Test adding a task with 'DONE' status.
 
@@ -88,7 +88,7 @@ def test_add_task_status_done_success(task_setup, task_teardown):
     assert task_page.check_if_task_present("Task5", "Task5 Description", "DONE")  # Verify the task is present
 
 
-def test_add_task_random_labels_success(task_setup, task_teardown):
+def test_add_task_random_labels_successful(task_setup, task_teardown):
     """
     Test adding a task with random labels.
 
@@ -109,7 +109,7 @@ def test_add_task_random_labels_success(task_setup, task_teardown):
                                            labels=random_labels)  # Verify the task is present
 
 
-def test_add_task_all_labels_success(task_setup, task_teardown):
+def test_add_task_all_labels_successful(task_setup, task_teardown):
     """
     Test adding a task with all available labels.
 
@@ -129,7 +129,7 @@ def test_add_task_all_labels_success(task_setup, task_teardown):
                                            labels=task_page.labels)  # Verify the task is present
 
 
-def test_add_task_upload_one_file_success(task_setup, task_teardown):
+def test_add_task_upload_one_file_successful(task_setup, task_teardown):
     """
     Test adding a task with one uploaded file.
 
@@ -151,7 +151,7 @@ def test_add_task_upload_one_file_success(task_setup, task_teardown):
                                            labels=random_labels, files=files_list)  # Verify the task is present
 
 
-def test_add_task_upload_two_files_success(task_setup, task_teardown):
+def test_add_task_upload_two_files_successful(task_setup, task_teardown):
     """
     Test adding a task with two uploaded files.
 
@@ -173,7 +173,7 @@ def test_add_task_upload_two_files_success(task_setup, task_teardown):
                                            labels=random_labels, files=files_list)  # Verify the task is present
 
 
-def test_add_task_missing_summary_fail(task_setup, task_teardown):
+def test_add_task_missing_summary_failure(task_setup, task_teardown):
     """
     Test adding a task without a summary and expect failure.
 
@@ -192,7 +192,7 @@ def test_add_task_missing_summary_fail(task_setup, task_teardown):
     assert "This field is required" in task_setup.page_source  # Verify the error message is present
 
 
-def test_add_task_missing_description_fail(task_setup, task_teardown):
+def test_add_task_missing_description_failure(task_setup, task_teardown):
     """
     Test adding a task without a description and expect failure.
 
@@ -211,7 +211,7 @@ def test_add_task_missing_description_fail(task_setup, task_teardown):
     assert "This field is required" in task_setup.page_source  # Verify the error message is present
 
 
-def test_view_tasks_success(task_setup, task_teardown):
+def test_view_tasks_successful(task_setup, task_teardown):
     """
     Test viewing tasks after adding them.
 
@@ -229,7 +229,7 @@ def test_view_tasks_success(task_setup, task_teardown):
     assert "Task67" in task_setup.page_source  # Verify task is present
 
 
-def test_delete_task_success(task_setup, task_teardown):
+def test_delete_task_successful(task_setup, task_teardown):
     """
     Test deleting tasks.
 
@@ -250,7 +250,7 @@ def test_delete_task_success(task_setup, task_teardown):
     assert "Task67" not in task_setup.page_source  # Verify task is deleted
 
 
-def test_cancel_delete_task_success(task_setup, task_teardown):
+def test_cancel_delete_task_successful(task_setup, task_teardown):
     """
     Test cancelling the deletion of tasks.
 
@@ -270,7 +270,7 @@ def test_cancel_delete_task_success(task_setup, task_teardown):
     assert "Task6" in task_setup.page_source  # Verify task is present
 
 
-def test_edit_task_success(task_setup, task_teardown):
+def test_edit_task_successful(task_setup, task_teardown):
     """
     Test editing a task.
 
@@ -303,7 +303,7 @@ def test_edit_task_success(task_setup, task_teardown):
 
 
 # FAILS!!
-def test_edit_task_missing_summary_fail(task_setup, task_teardown):
+def test_edit_task_missing_summary_failure(task_setup, task_teardown):
     """
     Test editing a task without a summary and expect failure.
 
@@ -321,8 +321,9 @@ def test_edit_task_missing_summary_fail(task_setup, task_teardown):
     task_page.wait_for_element_in_page_source("This field is required")  # Wait for error message
     assert "This field is required" in task_setup.page_source  # Verify the error message is present
 
+
 # FAILS!!
-def test_edit_task_missing_description_fail(task_setup, task_teardown):
+def test_edit_task_missing_description_failure(task_setup, task_teardown):
     """
     Test editing a task without a description and expect failure.
 

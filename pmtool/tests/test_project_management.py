@@ -3,7 +3,7 @@ import time
 from pmtool.pages.project_page import ProjectPage
 
 
-def test_add_new_project_success(general_setup_teardown):
+def test_add_new_project_successful(general_setup_teardown):
     """
     Test the successful addition of new projects.
 
@@ -20,7 +20,7 @@ def test_add_new_project_success(general_setup_teardown):
     assert "Project2" in general_setup_teardown.page_source
 
 
-def test_edit_project_name_description_success(general_setup_teardown):
+def test_edit_project_name_description_successful(general_setup_teardown):
     """
     Test the successful editing of a project's name and description.
 
@@ -35,7 +35,7 @@ def test_edit_project_name_description_success(general_setup_teardown):
     assert "Project2" not in general_setup_teardown.page_source
 
 
-def test_edit_project_name_success(general_setup_teardown):
+def test_edit_project_name_successful(general_setup_teardown):
     """
     Test the successful editing of a project's name only.
 
@@ -50,7 +50,7 @@ def test_edit_project_name_success(general_setup_teardown):
     assert "Project3" not in general_setup_teardown.page_source
 
 
-def test_edit_project_description_success(general_setup_teardown):
+def test_edit_project_description_successful(general_setup_teardown):
     """
     Test the successful editing of a project's description only.
 
@@ -65,7 +65,7 @@ def test_edit_project_description_success(general_setup_teardown):
     assert "Description3" not in general_setup_teardown.page_source
 
 
-def test_edit_project_with_no_changes(general_setup_teardown):
+def test_edit_project_with_no_changes_successful(general_setup_teardown):
     """
     Test editing a project without making any changes.
 
@@ -80,7 +80,7 @@ def test_edit_project_with_no_changes(general_setup_teardown):
     assert "Description4" in general_setup_teardown.page_source
 
 
-def test_delete_existent_project(general_setup_teardown):
+def test_delete_existent_project_successful(general_setup_teardown):
     """
     Test the successful deletion of an existing project.
 
@@ -94,7 +94,7 @@ def test_delete_existent_project(general_setup_teardown):
     assert "Description4" not in general_setup_teardown.page_source
 
 
-def test_cancel_delete_existent_project(general_setup_teardown):
+def test_cancel_delete_existent_project_successful(general_setup_teardown):
     """
     Test cancelling the deletion of an existing project.
 

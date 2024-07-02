@@ -6,7 +6,7 @@ from pmtool.utils.utils import (generate_random_name, generate_random_email, gen
                                 generate_random_address, generate_random_company_name)
 
 
-def test_signup_new_user_success_no_optional_fields(user_setup_teardown):
+def test_signup_new_user_no_optional_fields_successful(user_setup_teardown):
     """
     Test successful signup without optional fields.
 
@@ -25,7 +25,7 @@ def test_signup_new_user_success_no_optional_fields(user_setup_teardown):
             in user_setup_teardown.page_source)  # Assert successful signup message
 
 
-def test_signup_new_user_success_with_optional_fields(user_setup_teardown):
+def test_signup_new_user_with_optional_fields_successful(user_setup_teardown):
     """
     Test successful signup with optional fields filled.
 
@@ -47,7 +47,7 @@ def test_signup_new_user_success_with_optional_fields(user_setup_teardown):
             in user_setup_teardown.page_source)  # Assert successful signup message
 
 
-def test_signup_new_user_error_missing_email(user_setup_teardown):
+def test_signup_new_user_missing_email_failure(user_setup_teardown):
     """
     Test signup with missing email field and expect an error.
 
@@ -63,7 +63,7 @@ def test_signup_new_user_error_missing_email(user_setup_teardown):
     assert "This field is required" in user_setup_teardown.page_source  # Assert error message
 
 
-def test_signup_new_user_error_missing_password(user_setup_teardown):
+def test_signup_new_user_missing_password_failure(user_setup_teardown):
     """
     Test signup with missing password field and expect an error.
 
@@ -79,7 +79,7 @@ def test_signup_new_user_error_missing_password(user_setup_teardown):
     assert "This field is required" in user_setup_teardown.page_source  # Assert error message
 
 
-def test_signup_new_user_error_missing_name(user_setup_teardown):
+def test_signup_new_user_missing_name_failure(user_setup_teardown):
     """
     Test signup with missing name field and expect an error.
 
@@ -95,7 +95,7 @@ def test_signup_new_user_error_missing_name(user_setup_teardown):
     assert "This field is required" in user_setup_teardown.page_source  # Assert error message
 
 
-def test_login_user_success(user_setup_teardown):
+def test_login_user_successful(user_setup_teardown):
     """
     Test login with correct credentials.
 
@@ -109,7 +109,7 @@ def test_login_user_success(user_setup_teardown):
     assert "TaskDB" in user_setup_teardown.page_source  # Assert successful login
 
 
-def test_login_user_failure_invalid_credentials(user_setup_teardown):
+def test_login_user_invalid_credentials_failure(user_setup_teardown):
     """
     Test login with invalid credentials and expect an error.
 
@@ -124,7 +124,7 @@ def test_login_user_failure_invalid_credentials(user_setup_teardown):
     assert "Invalid login info" in user_setup_teardown.page_source  # Assert error message
 
 
-def test_login_user_failure_no_email(user_setup_teardown):
+def test_login_user_no_email_failure(user_setup_teardown):
     """
     Test login with no email provided and expect an error.
 
@@ -138,7 +138,7 @@ def test_login_user_failure_no_email(user_setup_teardown):
     assert "Invalid login info" in user_setup_teardown.page_source  # Assert error message
 
 
-def test_login_user_failure_no_password(user_setup_teardown):
+def test_login_user_no_password_failure(user_setup_teardown):
     """
     Test login with no password provided and expect an error.
 
@@ -152,7 +152,7 @@ def test_login_user_failure_no_password(user_setup_teardown):
     assert "Invalid login info" in user_setup_teardown.page_source  # Assert error message
 
 
-def test_login_user_success_after_password_change(user_setup_teardown):
+def test_login_user_after_password_change_successful(user_setup_teardown):
     """
     Test login after changing password successfully.
 

@@ -110,3 +110,33 @@ def test_enable_2fa_setting_successful(settings_setup, change_2fa_teardown):
     navigation_bar.select_settings_button()
     settings = settings_page.get_settings()
     assert settings['2fa']
+
+
+# FAILS!
+def test_change_to_blank_name_setting_failure(settings_setup):
+    # Initialize SettingsPage and edit name to blank
+    settings_page = SettingsPage(settings_setup)
+    settings_page.edit_name_to_blank()
+
+    settings_page.wait_for_element_in_page_source("This field is required")  # Wait for error message
+    assert "This field is required" in settings_setup.page_source  # Verify the error message is present
+
+
+# FAILS!
+def test_change_to_blank_email_setting_failure(settings_setup):
+    # Initialize SettingsPage and edit email to blank
+    settings_page = SettingsPage(settings_setup)
+    settings_page.edit_email_to_blank()
+
+    settings_page.wait_for_element_in_page_source("This field is required")  # Wait for error message
+    assert "This field is required" in settings_setup.page_source  # Verify the error message is present
+
+
+# FAILS!
+def test_change_to_blank_password_setting_failure(settings_setup):
+    # Initialize SettingsPage and edit password to blank
+    settings_page = SettingsPage(settings_setup)
+    settings_page.edit_password_to_blank()
+
+    settings_page.wait_for_element_in_page_source("This field is required")  # Wait for error message
+    assert "This field is required" in settings_setup.page_source  # Verify the error message is present
