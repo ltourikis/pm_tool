@@ -1,6 +1,11 @@
+import logging
 from pmtool.pages.task_page import TaskPage
 from pmtool.pages.project_page import ProjectPage
 from pmtool.utils.utils import generate_random_sublist
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 def test_add_task_required_fields_successful(task_setup, task_teardown):
@@ -11,6 +16,7 @@ def test_add_task_required_fields_successful(task_setup, task_teardown):
         task_setup: Fixture for setting up the test environment.
         task_teardown: Fixture for tearing down the test environment.
     """
+    logger.info("Starting test_add_task_required_fields_successful...")
     project_page = ProjectPage(task_setup)
     project_page.add_task("ForTaskManagement")  # Click add task on the ForTaskManagement project
 
@@ -18,6 +24,8 @@ def test_add_task_required_fields_successful(task_setup, task_teardown):
     task_page.create_task("Task1", "Task1 Description")  # Add a task with required fields
 
     assert task_page.check_if_task_present("Task1", "Task1 Description", "TO DO")  # Verify the task is present
+
+    logger.info("test_add_task_required_fields_successful completed successfully.\n")
 
 
 def test_add_task_status_to_do_successful(task_setup, task_teardown):
@@ -28,6 +36,7 @@ def test_add_task_status_to_do_successful(task_setup, task_teardown):
         task_setup: Fixture for setting up the test environment.
         task_teardown: Fixture for tearing down the test environment.
     """
+    logger.info("Starting test_add_task_status_to_do_successful...")
     project_page = ProjectPage(task_setup)
     project_page.add_task("ForTaskManagement")  # Click add task on the ForTaskManagement project
 
@@ -35,6 +44,8 @@ def test_add_task_status_to_do_successful(task_setup, task_teardown):
     task_page.create_task("Task2", "Task2 Description", "TO DO")  # Add a task with 'TO DO' status
 
     assert task_page.check_if_task_present("Task2", "Task2 Description", "TO DO")  # Verify the task is present
+
+    logger.info("test_add_task_status_to_do_successful completed successfully.\n")
 
 
 def test_add_task_status_in_progress_successful(task_setup, task_teardown):
@@ -45,6 +56,7 @@ def test_add_task_status_in_progress_successful(task_setup, task_teardown):
         task_setup: Fixture for setting up the test environment.
         task_teardown: Fixture for tearing down the test environment.
     """
+    logger.info("Starting test_add_task_status_in_progress_successful...")
     project_page = ProjectPage(task_setup)
     project_page.add_task("ForTaskManagement")  # Click add task on the ForTaskManagement project
 
@@ -52,6 +64,8 @@ def test_add_task_status_in_progress_successful(task_setup, task_teardown):
     task_page.create_task("Task3", "Task3 Description", "IN PROGRESS")  # Add a task with 'IN PROGRESS' status
 
     assert task_page.check_if_task_present("Task3", "Task3 Description", "IN PROGRESS")  # Verify the task is present
+
+    logger.info("test_add_task_status_in_progress_successful completed successfully.\n")
 
 
 def test_add_task_status_in_review_successful(task_setup, task_teardown):
@@ -62,6 +76,7 @@ def test_add_task_status_in_review_successful(task_setup, task_teardown):
         task_setup: Fixture for setting up the test environment.
         task_teardown: Fixture for tearing down the test environment.
     """
+    logger.info("Starting test_add_task_status_in_review_successful...")
     project_page = ProjectPage(task_setup)
     project_page.add_task("ForTaskManagement")  # Click add task on the ForTaskManagement project
 
@@ -69,6 +84,8 @@ def test_add_task_status_in_review_successful(task_setup, task_teardown):
     task_page.create_task("Task4", "Task4 Description", "IN REVIEW")  # Add a task with 'IN REVIEW' status
 
     assert task_page.check_if_task_present("Task4", "Task4 Description", "IN REVIEW")  # Verify the task is present
+
+    logger.info("test_add_task_status_in_review_successful completed successfully.\n")
 
 
 def test_add_task_status_done_successful(task_setup, task_teardown):
@@ -79,6 +96,7 @@ def test_add_task_status_done_successful(task_setup, task_teardown):
         task_setup: Fixture for setting up the test environment.
         task_teardown: Fixture for tearing down the test environment.
     """
+    logger.info("Starting test_add_task_status_done_successful...")
     project_page = ProjectPage(task_setup)
     project_page.add_task("ForTaskManagement")  # Click add task on the ForTaskManagement project
 
@@ -86,6 +104,8 @@ def test_add_task_status_done_successful(task_setup, task_teardown):
     task_page.create_task("Task5", "Task5 Description", "DONE")  # Add a task with 'DONE' status
 
     assert task_page.check_if_task_present("Task5", "Task5 Description", "DONE")  # Verify the task is present
+
+    logger.info("test_add_task_status_done_successful completed successfully.\n")
 
 
 def test_add_task_random_labels_successful(task_setup, task_teardown):
@@ -96,6 +116,7 @@ def test_add_task_random_labels_successful(task_setup, task_teardown):
         task_setup: Fixture for setting up the test environment.
         task_teardown: Fixture for tearing down the test environment.
     """
+    logger.info("Starting test_add_task_random_labels_successful...")
     project_page = ProjectPage(task_setup)
     project_page.add_task("ForTaskManagement")  # Click add task on the ForTaskManagement project
 
@@ -108,6 +129,8 @@ def test_add_task_random_labels_successful(task_setup, task_teardown):
     assert task_page.check_if_task_present("Task6", "Task6 Description", random_status,
                                            labels=random_labels)  # Verify the task is present
 
+    logger.info("test_add_task_random_labels_successful completed successfully.\n")
+
 
 def test_add_task_all_labels_successful(task_setup, task_teardown):
     """
@@ -117,6 +140,7 @@ def test_add_task_all_labels_successful(task_setup, task_teardown):
         task_setup: Fixture for setting up the test environment.
         task_teardown: Fixture for tearing down the test environment.
     """
+    logger.info("Starting test_add_task_all_labels_successful...")
     project_page = ProjectPage(task_setup)
     project_page.add_task("ForTaskManagement")  # Click add task on the ForTaskManagement project
 
@@ -128,6 +152,8 @@ def test_add_task_all_labels_successful(task_setup, task_teardown):
     assert task_page.check_if_task_present("Task67", "Task67 Description", random_status,
                                            labels=task_page.labels)  # Verify the task is present
 
+    logger.info("test_add_task_all_labels_successful completed successfully.\n")
+
 
 def test_add_task_upload_one_file_successful(task_setup, task_teardown):
     """
@@ -137,6 +163,7 @@ def test_add_task_upload_one_file_successful(task_setup, task_teardown):
         task_setup: Fixture for setting up the test environment.
         task_teardown: Fixture for tearing down the test environment.
     """
+    logger.info("Starting test_add_task_upload_one_file_successful...")
     project_page = ProjectPage(task_setup)
     project_page.add_task("ForTaskManagement")  # Click add task on the ForTaskManagement project
 
@@ -150,6 +177,8 @@ def test_add_task_upload_one_file_successful(task_setup, task_teardown):
     assert task_page.check_if_task_present("Task66", "Task66 Description", random_status,
                                            labels=random_labels, files=files_list)  # Verify the task is present
 
+    logger.info("test_add_task_upload_one_file_successful completed successfully.\n")
+
 
 def test_add_task_upload_two_files_successful(task_setup, task_teardown):
     """
@@ -159,6 +188,7 @@ def test_add_task_upload_two_files_successful(task_setup, task_teardown):
         task_setup: Fixture for setting up the test environment.
         task_teardown: Fixture for tearing down the test environment.
     """
+    logger.info("Starting test_add_task_upload_two_files_successful...")
     project_page = ProjectPage(task_setup)
     project_page.add_task("ForTaskManagement")  # Click add task on the ForTaskManagement project
 
@@ -172,6 +202,8 @@ def test_add_task_upload_two_files_successful(task_setup, task_teardown):
     assert task_page.check_if_task_present("Task7", "Task7 Description", random_status,
                                            labels=random_labels, files=files_list)  # Verify the task is present
 
+    logger.info("test_add_task_upload_two_files_successful completed successfully.\n")
+
 
 def test_add_task_missing_summary_failure(task_setup, task_teardown):
     """
@@ -181,6 +213,7 @@ def test_add_task_missing_summary_failure(task_setup, task_teardown):
         task_setup: Fixture for setting up the test environment.
         task_teardown: Fixture for tearing down the test environment.
     """
+    logger.info("Starting test_add_task_missing_summary_failure...")
     project_page = ProjectPage(task_setup)
     project_page.add_task("ForTaskManagement")  # Click add task on the ForTaskManagement project
 
@@ -191,6 +224,8 @@ def test_add_task_missing_summary_failure(task_setup, task_teardown):
     task_page.wait_for_element_in_page_source("This field is required")  # Wait for error message
     assert "This field is required" in task_setup.page_source  # Verify the error message is present
 
+    logger.info("test_add_task_missing_summary_failure completed successfully.\n")
+
 
 def test_add_task_missing_description_failure(task_setup, task_teardown):
     """
@@ -200,6 +235,7 @@ def test_add_task_missing_description_failure(task_setup, task_teardown):
         task_setup: Fixture for setting up the test environment.
         task_teardown: Fixture for tearing down the test environment.
     """
+    logger.info("Starting test_add_task_missing_description_failure...")
     project_page = ProjectPage(task_setup)
     project_page.add_task("ForTaskManagement")  # Click add task on the ForTaskManagement project
 
@@ -210,6 +246,8 @@ def test_add_task_missing_description_failure(task_setup, task_teardown):
     task_page.wait_for_element_in_page_source("This field is required")  # Wait for error message
     assert "This field is required" in task_setup.page_source  # Verify the error message is present
 
+    logger.info("test_add_task_missing_description_failure completed successfully.\n")
+
 
 def test_view_tasks_successful(task_setup, task_teardown):
     """
@@ -219,6 +257,7 @@ def test_view_tasks_successful(task_setup, task_teardown):
         task_setup: Fixture for setting up the test environment.
         task_teardown: Fixture for tearing down the test environment.
     """
+    logger.info("Starting test_view_tasks_successful...")
     project_page = ProjectPage(task_setup)
     project_page.view_task("ForTaskManagement")  # View the project for task management
 
@@ -227,6 +266,8 @@ def test_view_tasks_successful(task_setup, task_teardown):
 
     assert "Task66" in task_setup.page_source  # Verify task is present
     assert "Task67" in task_setup.page_source  # Verify task is present
+
+    logger.info("test_view_tasks_successful completed successfully.\n")
 
 
 def test_delete_task_successful(task_setup, task_teardown):
@@ -237,6 +278,7 @@ def test_delete_task_successful(task_setup, task_teardown):
         task_setup: Fixture for setting up the test environment.
         task_teardown: Fixture for tearing down the test environment.
     """
+    logger.info("Starting test_delete_task_successful...")
     project_page = ProjectPage(task_setup)
     project_page.view_task("ForTaskManagement")  # View the project for task management
 
@@ -249,6 +291,8 @@ def test_delete_task_successful(task_setup, task_teardown):
     assert "Task66" not in task_setup.page_source  # Verify task is deleted
     assert "Task67" not in task_setup.page_source  # Verify task is deleted
 
+    logger.info("test_delete_task_successful completed successfully.\n")
+
 
 def test_cancel_delete_task_successful(task_setup, task_teardown):
     """
@@ -258,6 +302,7 @@ def test_cancel_delete_task_successful(task_setup, task_teardown):
         task_setup: Fixture for setting up the test environment.
         task_teardown: Fixture for tearing down the test environment.
     """
+    logger.info("Starting test_cancel_delete_task_successful...")
     project_page = ProjectPage(task_setup)
     project_page.view_task("ForTaskManagement")  # View the project for task management
 
@@ -269,6 +314,8 @@ def test_cancel_delete_task_successful(task_setup, task_teardown):
 
     assert "Task6" in task_setup.page_source  # Verify task is present
 
+    logger.info("test_cancel_delete_task_successful completed successfully.\n")
+
 
 def test_edit_task_successful(task_setup, task_teardown):
     """
@@ -278,6 +325,7 @@ def test_edit_task_successful(task_setup, task_teardown):
         task_setup: Fixture for setting up the test environment.
         task_teardown: Fixture for tearing down the test environment.
     """
+    logger.info("Starting test_edit_task_successful...")
     project_page = ProjectPage(task_setup)
     project_page.add_task("ForTaskManagement")  # Click add task on the ForTaskManagement project
 
@@ -301,6 +349,8 @@ def test_edit_task_successful(task_setup, task_teardown):
                                            "DONE", labels=["backend", "jenkins"],
                                            files=updated_files_list)  # Verify the updated task is present
 
+    logger.info("test_edit_task_successful completed successfully.\n")
+
 
 # FAILS!!
 def test_edit_task_missing_summary_failure(task_setup, task_teardown):
@@ -311,6 +361,7 @@ def test_edit_task_missing_summary_failure(task_setup, task_teardown):
         task_setup: Fixture for setting up the test environment.
         task_teardown: Fixture for tearing down the test environment.
     """
+    logger.info("Starting test_edit_task_missing_summary_failure...")
     project_page = ProjectPage(task_setup)
     project_page.view_task("ForTaskManagement")  # View the project for task management
 
@@ -320,6 +371,8 @@ def test_edit_task_missing_summary_failure(task_setup, task_teardown):
 
     task_page.wait_for_element_in_page_source("This field is required")  # Wait for error message
     assert "This field is required" in task_setup.page_source  # Verify the error message is present
+
+    logger.info("test_edit_task_missing_summary_failure completed successfully.\n")
 
 
 # FAILS!!
@@ -331,6 +384,7 @@ def test_edit_task_missing_description_failure(task_setup, task_teardown):
         task_setup: Fixture for setting up the test environment.
         task_teardown: Fixture for tearing down the test environment.
     """
+    logger.info("Starting test_edit_task_missing_description_failure...")
     project_page = ProjectPage(task_setup)
     project_page.view_task("ForTaskManagement")  # View the project for task management
 
@@ -340,3 +394,5 @@ def test_edit_task_missing_description_failure(task_setup, task_teardown):
 
     task_page.wait_for_element_in_page_source("This field is required")  # Wait for error message
     assert "This field is required" in task_setup.page_source  # Verify the error message is present
+
+    logger.info("test_edit_task_missing_description_failure completed successfully.\n")

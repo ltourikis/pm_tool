@@ -1,7 +1,12 @@
+import logging
 from pmtool.pages.navigation_bar import NavigationBar
 from pmtool.pages.taskdb_page import TaskDBPage
 from pmtool.pages.project_page import ProjectPage
 from pmtool.pages.task_page import TaskPage
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 def test_view_tasks_successful(taskdb_setup_teardown):
@@ -11,6 +16,7 @@ def test_view_tasks_successful(taskdb_setup_teardown):
     Parameters:
     taskdb_setup_teardown (fixture): Setup and teardown fixture for the task database.
     """
+    logger.info("Starting test_view_tasks_successful...")
     navigation_bar = NavigationBar(taskdb_setup_teardown)
     navigation_bar.select_tasks_db_button()
     taskdb_page = TaskDBPage(taskdb_setup_teardown)
@@ -21,6 +27,8 @@ def test_view_tasks_successful(taskdb_setup_teardown):
     # Assert that all expected tasks are present
     assert taskdb_page.check_if_tasks_present(tasks_present)
 
+    logger.info("test_view_tasks_successful completed successfully.\n")
+
 
 def test_add_task_check_taskdb_successful(taskdb_setup_teardown):
     """
@@ -29,6 +37,7 @@ def test_add_task_check_taskdb_successful(taskdb_setup_teardown):
     Parameters:
     taskdb_setup_teardown (fixture): Setup and teardown fixture for the task database.
     """
+    logger.info("Starting test_add_task_check_taskdb_successful...")
     navigation_bar = NavigationBar(taskdb_setup_teardown)
     project_page = ProjectPage(taskdb_setup_teardown)
     task_page = TaskPage(taskdb_setup_teardown)
@@ -46,6 +55,8 @@ def test_add_task_check_taskdb_successful(taskdb_setup_teardown):
     # Assert that all expected tasks, including the new one, are present
     assert taskdb_page.check_if_tasks_present(tasks_present)
 
+    logger.info("test_add_task_check_taskdb_successful completed successfully.\n")
+
 
 def test_remove_task_check_taskdb_successful(taskdb_setup_teardown):
     """
@@ -54,6 +65,7 @@ def test_remove_task_check_taskdb_successful(taskdb_setup_teardown):
     Parameters:
     taskdb_setup_teardown (fixture): Setup and teardown fixture for the task database.
     """
+    logger.info("Starting test_remove_task_check_taskdb_successful...")
     navigation_bar = NavigationBar(taskdb_setup_teardown)
     project_page = ProjectPage(taskdb_setup_teardown)
     task_page = TaskPage(taskdb_setup_teardown)
@@ -76,6 +88,8 @@ def test_remove_task_check_taskdb_successful(taskdb_setup_teardown):
     taskdb_page.driver.refresh()
     assert taskdb_page.check_if_tasks_not_present(tasks_deleted)
 
+    logger.info("test_remove_task_check_taskdb_successful completed successfully.\n")
+
 
 def test_sort_tasks_by_summary(taskdb_setup_teardown):
     """
@@ -84,6 +98,7 @@ def test_sort_tasks_by_summary(taskdb_setup_teardown):
     Parameters:
     taskdb_setup_teardown (fixture): Setup and teardown fixture for the task database.
     """
+    logger.info("Starting test_sort_tasks_by_summary...")
     navigation_bar = NavigationBar(taskdb_setup_teardown)
     navigation_bar.select_tasks_db_button()
     taskdb_page = TaskDBPage(taskdb_setup_teardown)
@@ -112,6 +127,8 @@ def test_sort_tasks_by_summary(taskdb_setup_teardown):
     # Assert that tasks are sorted in descending order
     assert sorted_task_titles == sorted(sorted_task_titles, reverse=True)
 
+    logger.info("test_sort_tasks_by_summary completed successfully.\n")
+
 
 def test_search_field(taskdb_setup_teardown):
     """
@@ -120,6 +137,7 @@ def test_search_field(taskdb_setup_teardown):
     Parameters:
     taskdb_setup_teardown (fixture): Setup and teardown fixture for the task database.
     """
+    logger.info("Starting test_search_field...")
     navigation_bar = NavigationBar(taskdb_setup_teardown)
     navigation_bar.select_tasks_db_button()
     taskdb_page = TaskDBPage(taskdb_setup_teardown)
@@ -128,7 +146,6 @@ def test_search_field(taskdb_setup_teardown):
     # Check initial state of tasks present
     expected_tasks = ["$_Task", "A_Task", "B_Task", "Z_Task"]
     visible_tasks = taskdb_page.get_tasks()
-    print(visible_tasks)
     assert set(visible_tasks) == set(expected_tasks)
 
     # Search for each task individually and verify the search results
@@ -142,3 +159,5 @@ def test_search_field(taskdb_setup_teardown):
     taskdb_page.search_task("Non_Existent_Task")
     visible_tasks = taskdb_page.get_tasks()
     assert visible_tasks == []
+
+    logger.info("test_search_field completed successfully.\n")

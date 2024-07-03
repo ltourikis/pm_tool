@@ -1,5 +1,10 @@
+import logging
 from selenium.webdriver.common.by import By
 from .base_page import BasePage
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 class SettingsPage(BasePage):
@@ -28,24 +33,31 @@ class SettingsPage(BasePage):
         if name:
             self.wait_for_element(By.ID, "fullName").clear()
             self.wait_for_element(By.ID, "fullName").send_keys(name)
+            logger.info(f"Changed full name to: {name}")
         if email:
             self.wait_for_element(By.ID, "email").clear()
             self.wait_for_element(By.ID, "email").send_keys(email)
+            logger.info(f"Changed email to: {email}")
         if password:
             self.wait_for_element(By.ID, "password").clear()
             self.wait_for_element(By.ID, "password").send_keys(password)
+            logger.info("Changed password.")
         if company:
             self.wait_for_element(By.ID, "company").clear()
             self.wait_for_element(By.ID, "company").send_keys(company)
+            logger.info(f"Changed company name to: {company}")
         if address:
             self.wait_for_element(By.ID, "address").clear()
             self.wait_for_element(By.ID, "address").send_keys(address)
+            logger.info(f"Changed address to: {address}")
         if checkbox:
             checkbox_element = self.wait_for_element_present(By.ID, 'has2fa')
             self.driver.execute_script("arguments[0].click();", checkbox_element)
+            logger.info("Toggled 2FA checkbox.")
 
         # Click the save button to apply changes
         self.wait_for_element(By.CSS_SELECTOR, '.btn.waves-effect.waves-light').click()
+        logger.info("Settings changes saved.")
 
     def get_settings(self):
         """
@@ -54,7 +66,6 @@ class SettingsPage(BasePage):
         Returns:
             dict: A dictionary containing the current settings of the user.
         """
-
         def is_checked(driver, item_id):
             """
             Check if a checkbox is checked.
@@ -79,6 +90,7 @@ class SettingsPage(BasePage):
             'address': self.wait_for_element(By.ID, "address").get_attribute("value"),
             '2fa': is_checked(self.driver, "has2fa")
         }
+        logger.info("Retrieved current user settings.")
         return settings
 
     def edit_name_to_blank(self):
@@ -88,6 +100,7 @@ class SettingsPage(BasePage):
         self.wait_for_element(By.ID, "fullName").clear()
         self.wait_for_element(By.ID, "email").click()  # Click to trigger any validation
         self.wait_for_element(By.CSS_SELECTOR, '.btn.waves-effect.waves-light').click()
+        logger.info("Cleared name field and attempted to update Settings.")
 
     def edit_email_to_blank(self):
         """
@@ -96,6 +109,7 @@ class SettingsPage(BasePage):
         self.wait_for_clickable(By.ID, "email").clear()
         self.wait_for_element(By.ID, "fullName").click()  # Click to trigger any validation
         self.wait_for_element(By.CSS_SELECTOR, '.btn.waves-effect.waves-light').click()
+        logger.info("Cleared email field and attempted to update Settings.")
 
     def edit_password_to_blank(self):
         """
@@ -104,3 +118,4 @@ class SettingsPage(BasePage):
         self.wait_for_clickable(By.ID, "password").clear()
         self.wait_for_element(By.ID, "fullName").click()  # Click to trigger any validation
         self.wait_for_element(By.CSS_SELECTOR, '.btn.waves-effect.waves-light').click()
+        logger.info("Cleared password field and attempted to update Settings.")

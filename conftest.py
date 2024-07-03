@@ -1,4 +1,5 @@
 import pytest
+import logging
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
@@ -7,6 +8,16 @@ from pmtool.pages.login_page import LoginPage
 from pmtool.pages.settings_page import SettingsPage
 from pmtool.pages.task_page import TaskPage
 from pmtool.pages.navigation_bar import NavigationBar
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('test.log'),
+        logging.StreamHandler()
+    ]
+)
 
 
 @pytest.fixture(scope="module")
@@ -22,19 +33,23 @@ def general_setup_teardown():
     - Yields the WebDriver instance to the tests.
     - Quits the WebDriver session after the tests are completed.
     """
-    # Initialize WebDriver using ChromeDriverManager for automatic management of ChromeDriver
+    logging.info("Setting up WebDriver session for general tests...")
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
     driver.maximize_window()
     # driver = webdriver.Chrome()  # Ensure chromedriver is in your PATH
     driver.get("https://pm-tool-e63fa77e3353.herokuapp.com")
-    # Perform login
+    logging.info("WebDriver session established.")
+
     login_page = LoginPage(driver)
     login_page.select_login_button()
     login_page.login(email="loukastourikis3@gmail.com", password="4321")
-    yield driver
-    # Quit the WebDriver session
-    driver.quit()
+    logging.info("Logged into PM Tool application.")
 
+    yield driver
+
+    logging.info("Tearing down WebDriver session...")
+    driver.quit()
+    logging.info("WebDriver session closed.")
 
 @pytest.fixture(scope="function")
 def user_setup_teardown():
@@ -49,15 +64,19 @@ def user_setup_teardown():
     - Yields the WebDriver instance to the tests.
     - Quits the WebDriver session after the tests are completed.
     """
-    # Initialize WebDriver using ChromeDriverManager for automatic management of ChromeDriver
-    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+    logging.info("Setting up WebDriver session for user-level tests...")
+    # driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+    # driver.maximize_window()
+    driver = webdriver.Chrome()  # Ensure chromedriver is in your PATH
     driver.maximize_window()
-    # driver = webdriver.Chrome()  # Ensure chromedriver is in your PATH
     driver.get("https://pm-tool-e63fa77e3353.herokuapp.com")
-    yield driver
-    # Quit the WebDriver session
-    driver.quit()
+    logging.info("WebDriver session established.")
 
+    yield driver
+
+    logging.info("Tearing down WebDriver session...")
+    driver.quit()
+    logging.info("WebDriver session closed.")
 
 @pytest.fixture(scope="module")
 def task_setup():
@@ -73,27 +92,30 @@ def task_setup():
     - Yields the WebDriver instance to the tests.
     - Quits the WebDriver session after the tests are completed.
     """
-    # Initialize WebDriver using ChromeDriverManager for automatic management of ChromeDriver
+    logging.info("Setting up WebDriver session for task-related module tests...")
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
     driver.maximize_window()
     # driver = webdriver.Chrome()  # Ensure chromedriver is in your PATH
     driver.get("https://pm-tool-e63fa77e3353.herokuapp.com")
-    # Perform login
+    logging.info("WebDriver session established.")
+
     login_page = LoginPage(driver)
     login_page.select_login_button()
     login_page.login(email="loukastourikis3@gmail.com", password="4321")
+    logging.info("Logged into PM Tool application.")
 
-    # Create a project for task management
     project_page = ProjectPage(driver)
     project_page.add_project("ForTaskManagement", "For Task Management")
     project_page.wait_for_element_in_page_source("ForTaskManagement")
     assert "ForTaskManagement" in driver.page_source
+    logging.info("Project created for task management.")
 
     yield driver
-    # Uncomment the following line to delete the project after tests are completed
-    project_page.delete_project("ForTaskManagement")
-    driver.quit()
 
+    project_page.delete_project("ForTaskManagement")
+    logging.info("Project deleted after task-related module tests.")
+    driver.quit()
+    logging.info("WebDriver session closed.")
 
 @pytest.fixture(scope="function")
 def task_teardown(task_setup):
@@ -105,7 +127,7 @@ def task_teardown(task_setup):
     - After tests complete, navigates back to the dashboard using the navigation bar.
     """
     yield task_setup
-    # Navigate back to the dashboard
+    logging.info("Navigating back to the dashboard...")
     navigation_bar = NavigationBar(task_setup)
     navigation_bar.select_dashboard_button()
 
@@ -123,23 +145,26 @@ def settings_setup():
     - Yields the WebDriver instance to the tests.
     - Quits the WebDriver session after the tests are completed.
     """
-    # Initialize WebDriver using ChromeDriverManager for automatic management of ChromeDriver
+    logging.info("Setting up WebDriver session for User settings related tests...")
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
     driver.maximize_window()
     # driver = webdriver.Chrome()  # Ensure chromedriver is in your PATH
     driver.get("https://pm-tool-e63fa77e3353.herokuapp.com")
-    # Perform login
+    logging.info("WebDriver session established.")
+
     login_page = LoginPage(driver)
     login_page.select_login_button()
     login_page.login(email="loukastourikis3@gmail.com", password="4321")
+    logging.info("Logged into PM Tool application.")
 
-    # Navigate to the settings page
     navigation_bar = NavigationBar(driver)
     navigation_bar.select_settings_button()
+    logging.info("Navigated to settings page.")
 
     yield driver
-    # Quit the WebDriver session
+
     driver.quit()
+    logging.info("WebDriver session closed.")
 
 
 @pytest.fixture(scope="function")
@@ -152,7 +177,7 @@ def change_email_teardown(settings_setup):
     - After tests complete, changes the email setting back to the original.
     """
     yield settings_setup
-    # Change email settings back to the original
+    logging.info("Changing email settings back to the original...")
     settings_page = SettingsPage(settings_setup)
     settings_page.change_settings(email="loukastourikis3@gmail.com", password="4321")
 
@@ -167,7 +192,7 @@ def change_password_teardown(settings_setup):
     - After tests complete, navigates to the settings page and changes the password setting back to the original.
     """
     yield settings_setup
-    # Navigate to the settings page and change password settings back to the original
+    logging.info("Changing password settings back to the original...")
     navigation_bar = NavigationBar(settings_setup)
     navigation_bar.select_settings_button()
     settings_page = SettingsPage(settings_setup)
@@ -184,7 +209,7 @@ def change_2fa_teardown(settings_setup):
     - After tests complete, navigates to the settings page and changes the 2FA setting back to the original state.
     """
     yield settings_setup
-    # Navigate to the settings page and change 2FA settings back to the original state
+    logging.info("Changing 2FA settings back to the original state...")
     navigation_bar = NavigationBar(settings_setup)
     navigation_bar.select_settings_button()
     settings_page = SettingsPage(settings_setup)
@@ -204,12 +229,13 @@ def taskdb_setup_teardown():
     - Yields the WebDriver instance to the tests.
     - Quits the WebDriver session after the tests are completed.
     """
-    # Initialize WebDriver using ChromeDriverManager for automatic management of ChromeDriver
+    logging.info("Setting up WebDriver session for TaskDB-related tests...")
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
     driver.maximize_window()
     # driver = webdriver.Chrome()  # Ensure chromedriver is in your PATH
     driver.get("https://pm-tool-e63fa77e3353.herokuapp.com")
-    # Perform login
+    logging.info("WebDriver session established.")
+
     login_page = LoginPage(driver)
     navigation_bar = NavigationBar(driver)
     project_page = ProjectPage(driver)
@@ -218,23 +244,25 @@ def taskdb_setup_teardown():
     login_page.select_login_button()
     login_page.login(email="loukastourikis3@gmail.com", password="4321")
 
-    # Create projects for TaskDB tests
     project_page.add_project("ForTaskDBTests1", "For Testing Purposes 1")
-    project_page.wait_for_element_in_page_source("ForTaskDBTests1")  # Create a project
+    project_page.wait_for_element_in_page_source("ForTaskDBTests1")
     assert "ForTaskDBTests1" in driver.page_source
     project_page.add_project("ForTaskDBTests2", "For Testing Purposes 2")
-    project_page.wait_for_element_in_page_source("ForTaskDBTests2")  # Create a second project
+    project_page.wait_for_element_in_page_source("ForTaskDBTests2")
     assert "ForTaskDBTests2" in driver.page_source
+    logging.info("Projects created for TaskDB tests.")
 
-    # Create tasks within the projects
-    for task in ["A_Task", "Z_Task"]:
+    for task_summary in ["A_Task", "Z_Task"]:
         project_page.add_task("ForTaskDBTests1")
-        task_page.create_task(task, f"{task} Description")
+        task_page.create_task(task_summary, f"{task_summary} Description")
         navigation_bar.select_dashboard_button()
-    for task in ["B_Task", "$_Task"]:
+
+    for task_summary in ["B_Task", "$_Task"]:
         project_page.add_task("ForTaskDBTests2")
-        task_page.create_task(task, f"{task} Description")
+        task_page.create_task(task_summary, f"{task_summary} Description")
         navigation_bar.select_dashboard_button()
 
     yield driver
+
     driver.quit()
+    logging.info("WebDriver session closed.")

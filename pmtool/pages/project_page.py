@@ -1,5 +1,10 @@
+import logging
 from selenium.webdriver.common.by import By
 from .base_page import BasePage
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 class ProjectPage(BasePage):
@@ -18,6 +23,8 @@ class ProjectPage(BasePage):
             project_name (str): The name of the project to add.
             description (str): The description of the project.
         """
+        logger.info(f"Adding project: {project_name}")
+
         # Click on the 'Create' button
         self.wait_for_clickable(By.CSS_SELECTOR, 'a[href="/createProject"]').click()
 
@@ -27,6 +34,7 @@ class ProjectPage(BasePage):
 
         # Submit the form
         self.wait_for_clickable(By.CSS_SELECTOR, 'button[type="submit"]').click()
+        logger.info(f"Project '{project_name}' added successfully.")
 
     def edit_project(self, old_project_name, new_project_name="", new_description=""):
         """
@@ -37,6 +45,8 @@ class ProjectPage(BasePage):
             new_project_name (str): The new name for the project (optional).
             new_description (str): The new description for the project (optional).
         """
+        logger.info(f"Editing project: {old_project_name}")
+
         project = (f'//span[text()="{old_project_name}"]/ancestor::div[contains(@class, "card")]/div['
                    f'@class="card-action"]/')
 
@@ -47,14 +57,17 @@ class ProjectPage(BasePage):
         if new_project_name:
             self.wait_for_clickable(By.ID, "name").clear()
             self.wait_for_clickable(By.ID, "name").send_keys(new_project_name)
+            logger.info(f"Updated project name to: {new_project_name}")
 
         # Update the project description if provided
         if new_description:
             self.wait_for_clickable(By.ID, "description").clear()
             self.wait_for_clickable(By.ID, "description").send_keys(new_description)
+            logger.info(f"Updated project description to: {new_description}")
 
         # Submit the form
         self.wait_for_clickable(By.CSS_SELECTOR, 'button[type="submit"]').click()
+        logger.info(f"Project '{old_project_name}' edited successfully.")
 
     def delete_project(self, project_name):
         """
@@ -63,6 +76,8 @@ class ProjectPage(BasePage):
         Args:
             project_name (str): The name of the project to delete.
         """
+        logger.info(f"Deleting project: {project_name}")
+
         project = (f'//span[text()="{project_name}"]/ancestor::div[contains(@class, "card")]/div['
                    f'@class="card-action"]/')
 
@@ -71,6 +86,7 @@ class ProjectPage(BasePage):
 
         # Accept the confirmation alert
         self.accept_alert()
+        logger.info(f"Project '{project_name}' deleted successfully.")
 
     def cancel_delete_project(self, project_name):
         """
@@ -79,6 +95,8 @@ class ProjectPage(BasePage):
         Args:
             project_name (str): The name of the project to cancel deletion.
         """
+        logger.info(f"Cancelling delete for project: {project_name}")
+
         project = (f'//span[text()="{project_name}"]/ancestor::div[contains(@class, "card")]/div['
                    f'@class="card-action"]/')
 
@@ -87,6 +105,7 @@ class ProjectPage(BasePage):
 
         # Dismiss the confirmation alert
         self.dismiss_alert()
+        logger.info(f"Deletion of project '{project_name}' cancelled.")
 
     def add_task(self, project_name):
         """
@@ -95,11 +114,14 @@ class ProjectPage(BasePage):
         Args:
             project_name (str): The name of the project to add a task to.
         """
+        logger.info(f"Adding task to project: {project_name}")
+
         project = (f'//span[text()="{project_name}"]/ancestor::div[contains(@class, "card")]/div['
                    f'@class="card-action"]/')
 
         # Click on the 'Add Task' button
         self.wait_for_clickable(By.XPATH, project + 'a[@id="btn_add_task"]').click()
+        logger.info(f"Task added to project: {project_name}")
 
     def view_task(self, project_name):
         """
@@ -108,8 +130,11 @@ class ProjectPage(BasePage):
         Args:
             project_name (str): The name of the project to view tasks.
         """
+        logger.info(f"Viewing tasks of project: {project_name}")
+
         project = (f'//span[text()="{project_name}"]/ancestor::div[contains(@class, "card")]/div['
                    f'@class="card-action"]/')
 
         # Click on the 'View Tasks' button
         self.wait_for_clickable(By.XPATH, project + 'a[@id="btn_view_tasks"]').click()
+        logger.info(f"Viewed tasks of project: {project_name}")

@@ -1,6 +1,11 @@
+import logging
 from selenium.webdriver.common.by import By
 from .base_page import BasePage
 import time
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 class TaskDBPage(BasePage):
@@ -21,9 +26,11 @@ class TaskDBPage(BasePage):
         Returns:
             bool: True if all tasks are present, False otherwise.
         """
+        logger.info("Checking if tasks are present: {}".format(task_list))
         for task in task_list:
             self.wait_for_element_in_page_source(task)
             if task not in self.driver.page_source:
+                logger.info(f"Task '{task}' not found.")
                 return False
         return True
 
@@ -37,8 +44,10 @@ class TaskDBPage(BasePage):
         Returns:
             bool: True if none of the tasks are present, False otherwise.
         """
+        logger.info("Checking if tasks are not present: {}".format(task_list))
         for task in task_list:
             if task in self.driver.page_source:
+                logger.info(f"Task '{task}' found.")
                 return False
         return True
 
@@ -46,6 +55,7 @@ class TaskDBPage(BasePage):
         """
         Click the sort button to sort tasks.
         """
+        logger.info("Clicking sort button.")
         sort_button = self.wait_for_clickable(By.ID, 'sort_tasks')
         sort_button.click()
 
@@ -56,6 +66,7 @@ class TaskDBPage(BasePage):
         Returns:
             list: List of task titles.
         """
+        logger.info("Retrieving task titles.")
         task_titles_elements = self.driver.find_elements(By.ID, 'card_title')
         return [task.text for task in task_titles_elements]
 
@@ -66,6 +77,7 @@ class TaskDBPage(BasePage):
         Args:
             task_name (str): The name of the task to search for.
         """
+        logger.info(f"Searching for task: {task_name}")
         self.wait_for_page_load()
         search_box = self.wait_for_element(By.ID, "search")
         search_box.clear()

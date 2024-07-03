@@ -1,5 +1,10 @@
+import logging
 from selenium.webdriver.common.by import By
 from .base_page import BasePage
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 class TaskPage(BasePage):
@@ -37,14 +42,18 @@ class TaskPage(BasePage):
             labels (str, optional): The labels to be added to the task. Defaults to "".
             files (str, optional): The files to be uploaded with the task. Defaults to "".
         """
+        logger.info(f"Creating task: {task_summary}")
         self.wait_for_element(By.ID, "summary").send_keys(task_summary)
         self.wait_for_element(By.ID, "description").send_keys(task_description)
         if status:
+            logger.info(f"Setting status to: {status}")
             self.select_from_dropdown(".select-dropdown.dropdown-trigger", status)
         if labels:
+            logger.info(f"Adding labels: {labels}")
             self.select_options_from_select_box("search_input", "optionContainer", labels)
             self.wait_for_element(By.ID, "summary").click()  # Click to close dropdown
         if files:
+            logger.info(f"Uploading files: {files}")
             for file in files:
                 self.upload_file("attachments", file)
 
@@ -57,6 +66,7 @@ class TaskPage(BasePage):
         Args:
             task_summary (str): The summary of the task to be edited.
         """
+        logger.info(f"Editing task: {task_summary}")
         task = (f'//span[text()="{task_summary}"]/ancestor::div[contains(@class, "card")]/div['
                 f'@class="card-action"]/')
         self.wait_for_clickable(By.XPATH, task + 'a[@id="btn_update_task"]').click()
@@ -77,25 +87,32 @@ class TaskPage(BasePage):
             remove_files (str, optional): Files to be removed from the task. Defaults to "".
         """
         if task_summary:
+            logger.info(f"Editing task summary to: {task_summary}")
             self.wait_for_clickable(By.ID, "summary").clear()
             self.wait_for_element(By.ID, "summary").send_keys(task_summary)
         if task_description:
+            logger.info(f"Editing task description to: {task_description}")
             self.wait_for_element(By.ID, "description").clear()
             self.wait_for_element(By.ID, "description").send_keys(task_description)
         if status:
+            logger.info(f"Setting status to: {status}")
             self.select_from_dropdown(".select-dropdown.dropdown-trigger", status)
         if add_labels:
+            logger.info(f"Adding labels: {add_labels}")
             self.select_options_from_select_box("search_input", "optionContainer", add_labels)
             self.wait_for_element(By.ID, "summary").click()  # Click to close dropdown
         if remove_labels:
+            logger.info(f"Removing labels: {remove_labels}")
             for label in remove_labels:
                 self.remove_label(label)
                 self.wait_for_clickable(By.ID, "summary").click()  # Click to refresh state
         if add_files:
+            logger.info(f"Adding files: {add_files}")
             for file in add_files:
                 self.upload_file("attachments", file)
                 self.wait_for_clickable(By.ID, "summary").click()  # Click to refresh state
         if remove_files:
+            logger.info(f"Removing files: {remove_files}")
             for file in remove_files:
                 self.remove_file(file)
                 self.wait_for_clickable(By.ID, "summary").click()  # Click to refresh state
@@ -105,6 +122,7 @@ class TaskPage(BasePage):
         """
         Clear the task summary and attempt to update the task.
         """
+        logger.info("Editing task summary to blank")
         self.wait_for_clickable(By.ID, "summary").clear()
         self.wait_for_element(By.ID, "description").click()  # Click to trigger any validation
         self.wait_for_clickable(By.XPATH, "//button[contains(text(), 'Update')]").click()
@@ -113,6 +131,7 @@ class TaskPage(BasePage):
         """
         Clear the task description and attempt to update the task.
         """
+        logger.info("Editing task description to blank")
         self.wait_for_clickable(By.ID, "description").clear()
         self.wait_for_element(By.ID, "summary").click()  # Click to trigger any validation
         self.wait_for_clickable(By.XPATH, "//button[contains(text(), 'Update')]").click()
@@ -131,6 +150,7 @@ class TaskPage(BasePage):
         Returns:
             bool: True if the task is present, False otherwise.
         """
+        logger.info(f"Checking if task '{task_summary}' with description '{task_description}' is present in '{status_column}' column")
         column = self.wait_for_element(By.ID, f"{status_column.lower().replace(' ', '_')}_items")
         child_element = column.find_element(By.XPATH, f".//*[contains(text(), '{task_summary}')]")
         if not child_element:
@@ -156,6 +176,7 @@ class TaskPage(BasePage):
         Args:
             task_summary (str): The summary of the task to be deleted.
         """
+        logger.info(f"Deleting task: {task_summary}")
         task = (f'//span[text()="{task_summary}"]/ancestor::div[contains(@class, "card")]/div['
                 f'@class="card-action"]/')
         self.wait_for_clickable(By.XPATH, task + 'a[@id="btn_delete_task"]').click()
@@ -168,6 +189,7 @@ class TaskPage(BasePage):
         Args:
             task_summary (str): The summary of the task whose deletion is to be canceled.
         """
+        logger.info(f"Cancelling deletion of task: {task_summary}")
         task = (f'//span[text()="{task_summary}"]/ancestor::div[contains(@class, "card")]/div['
                 f'@class="card-action"]/')
         self.wait_for_clickable(By.XPATH, task + 'a[@id="btn_delete_task"]').click()
@@ -180,6 +202,7 @@ class TaskPage(BasePage):
         Args:
             label (str): The label to be removed.
         """
+        logger.info(f"Removing label: {label}")
         element = self.wait_for_element(By.XPATH, f"//span[contains(text(), '{label}')]")
         element.find_element(By.XPATH, ".//img[contains(@class, 'icon_cancel')]").click()
 
@@ -190,6 +213,7 @@ class TaskPage(BasePage):
         Args:
             file (str): The file to be removed.
         """
+        logger.info(f"Removing file: {file}")
         file_name = file.split("\\")[-1]
         element = self.wait_for_element(By.XPATH, f"//span[contains(text(), '{file_name}')]")
         element.find_element(By.XPATH, ".//i[contains(text(), 'delete_forever')]").click()
