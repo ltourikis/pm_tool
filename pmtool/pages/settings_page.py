@@ -1,4 +1,5 @@
 import logging
+import time
 from selenium.webdriver.common.by import By
 from .base_page import BasePage
 
@@ -32,22 +33,27 @@ class SettingsPage(BasePage):
         """
         if name:
             self.wait_for_element(By.ID, "fullName").clear()
+            time.sleep(1)
             self.wait_for_element(By.ID, "fullName").send_keys(name)
             logger.info(f"Changed full name to: {name}")
         if email:
             self.wait_for_element(By.ID, "email").clear()
+            time.sleep(1)
             self.wait_for_element(By.ID, "email").send_keys(email)
             logger.info(f"Changed email to: {email}")
         if password:
             self.wait_for_element(By.ID, "password").clear()
+            time.sleep(1)
             self.wait_for_element(By.ID, "password").send_keys(password)
             logger.info("Changed password.")
         if company:
             self.wait_for_element(By.ID, "company").clear()
+            time.sleep(1)
             self.wait_for_element(By.ID, "company").send_keys(company)
             logger.info(f"Changed company name to: {company}")
         if address:
             self.wait_for_element(By.ID, "address").clear()
+            time.sleep(1)
             self.wait_for_element(By.ID, "address").send_keys(address)
             logger.info(f"Changed address to: {address}")
         if checkbox:
@@ -98,6 +104,7 @@ class SettingsPage(BasePage):
         Clear name and attempt to update Settings.
         """
         self.wait_for_element(By.ID, "fullName").clear()
+        time.sleep(1)
         self.wait_for_element(By.ID, "email").click()  # Click to trigger any validation
         self.wait_for_element(By.CSS_SELECTOR, '.btn.waves-effect.waves-light').click()
         logger.info("Cleared name field and attempted to update Settings.")
@@ -107,6 +114,7 @@ class SettingsPage(BasePage):
         Clear email and attempt to update Settings.
         """
         self.wait_for_clickable(By.ID, "email").clear()
+        time.sleep(1)
         self.wait_for_element(By.ID, "fullName").click()  # Click to trigger any validation
         self.wait_for_element(By.CSS_SELECTOR, '.btn.waves-effect.waves-light').click()
         logger.info("Cleared email field and attempted to update Settings.")
@@ -116,6 +124,7 @@ class SettingsPage(BasePage):
         Clear password and attempt to update Settings.
         """
         self.wait_for_clickable(By.ID, "password").clear()
+        time.sleep(1)
         self.wait_for_element(By.ID, "fullName").click()  # Click to trigger any validation
         self.wait_for_element(By.CSS_SELECTOR, '.btn.waves-effect.waves-light').click()
         logger.info("Cleared password field and attempted to update Settings.")

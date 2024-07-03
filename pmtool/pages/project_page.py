@@ -1,4 +1,5 @@
 import logging
+import time
 from selenium.webdriver.common.by import By
 from .base_page import BasePage
 
@@ -56,12 +57,14 @@ class ProjectPage(BasePage):
         # Update the project name if provided
         if new_project_name:
             self.wait_for_clickable(By.ID, "name").clear()
+            time.sleep(1)
             self.wait_for_clickable(By.ID, "name").send_keys(new_project_name)
             logger.info(f"Updated project name to: {new_project_name}")
 
         # Update the project description if provided
         if new_description:
             self.wait_for_clickable(By.ID, "description").clear()
+            time.sleep(1)
             self.wait_for_clickable(By.ID, "description").send_keys(new_description)
             logger.info(f"Updated project description to: {new_description}")
 

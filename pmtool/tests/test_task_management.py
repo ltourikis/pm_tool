@@ -376,13 +376,13 @@ def test_edit_task_missing_summary_failure(task_setup, task_teardown):
 
 
 # FAILS!!
-def test_edit_task_missing_description_failure(task_setup, task_teardown):
+def test_edit_task_missing_description_failure(task_setup, last_task_teardown):
     """
     Test editing a task without a description and expect failure.
 
     Args:
         task_setup: Fixture for setting up the test environment.
-        task_teardown: Fixture for tearing down the test environment.
+        last_task_teardown: Fixture for tearing down the test environment.
     """
     logger.info("Starting test_edit_task_missing_description_failure...")
     project_page = ProjectPage(task_setup)

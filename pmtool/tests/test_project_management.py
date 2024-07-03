@@ -138,4 +138,10 @@ def test_cancel_delete_existent_project_successful(general_setup_teardown):
     assert "Description1" in general_setup_teardown.page_source
     logger.info("Deletion of Project1 cancelled successfully.")
 
+    project_page = ProjectPage(general_setup_teardown)
+    project_page.delete_project("Project1")
+    time.sleep(1)
+    assert "Project1" not in general_setup_teardown.page_source
+    assert "Description1" not in general_setup_teardown.page_source
+    logger.info("Project1 deleted successfully.")
     logger.info("test_cancel_delete_existent_project_successful completed successfully.")

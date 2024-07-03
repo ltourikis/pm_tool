@@ -114,7 +114,6 @@ def task_setup():
 
     yield driver
 
-    project_page.delete_project("ForTaskManagement")
     logging.info("Project deleted after task-related module tests.")
     driver.quit()
     logging.info("WebDriver session closed.")
@@ -133,6 +132,24 @@ def task_teardown(task_setup):
     logging.info("Navigating back to the dashboard...")
     navigation_bar = NavigationBar(task_setup)
     navigation_bar.select_dashboard_button()
+
+
+@pytest.fixture(scope="function")
+def last_task_teardown(task_setup):
+    """
+    Fixture for cleaning up after task-related tests.
+
+    This fixture:
+    - Yields the WebDriver instance to the tests.
+    - After tests complete, navigates back to the dashboard using the navigation bar.
+    """
+    yield task_setup
+    logging.info("Navigating back to the dashboard...")
+    navigation_bar = NavigationBar(task_setup)
+    navigation_bar.select_dashboard_button()
+    project_page = ProjectPage(task_setup)
+    project_page.wait_for_element_in_page_source("ForTaskManagement")
+    project_page.delete_project("ForTaskManagement")
 
 
 @pytest.fixture(scope="function")
@@ -256,14 +273,20 @@ def taskdb_setup_teardown():
     logging.info("Projects created for TaskDB tests.")
 
     for task_summary in ["A_Task", "Z_Task"]:
-        project_page.add_task("ForTaskDBTests1")
-        task_page.create_task(task_summary, f"{task_summary} Description")
+        navigation_bar.wait_for_page_load()
         navigation_bar.select_dashboard_button()
+        project_page.wait_for_page_load()
+        project_page.add_task("ForTaskDBTests1")
+        task_page.wait_for_page_load()
+        task_page.create_task(task_summary, f"{task_summary} Description")
 
     for task_summary in ["B_Task", "$_Task"]:
-        project_page.add_task("ForTaskDBTests2")
-        task_page.create_task(task_summary, f"{task_summary} Description")
+        navigation_bar.wait_for_page_load()
         navigation_bar.select_dashboard_button()
+        project_page.wait_for_page_load()
+        project_page.add_task("ForTaskDBTests2")
+        task_page.wait_for_page_load()
+        task_page.create_task(task_summary, f"{task_summary} Description")
 
     yield driver
 

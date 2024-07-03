@@ -1,4 +1,5 @@
 import logging
+import time
 from selenium.webdriver.common.by import By
 from .base_page import BasePage
 
@@ -21,7 +22,7 @@ class TaskPage(BasePage):
         Tasks Page has increased custom delay compared to Base Page.
         """
         super().__init__(driver)
-        self.custom_delay = 0.5  # Set a custom delay for actions on this page
+        self.custom_delay = 0.7  # Set a custom delay for actions on this page
 
     labels = ["frontend", "backend", "design", "testing", "performance", "techdept", "ci", "jenkins"]
     status = ["TO DO", "IN PROGRESS", "DONE", "IN REVIEW"]
@@ -89,10 +90,12 @@ class TaskPage(BasePage):
         if task_summary:
             logger.info(f"Editing task summary to: {task_summary}")
             self.wait_for_clickable(By.ID, "summary").clear()
+            time.sleep(1)
             self.wait_for_element(By.ID, "summary").send_keys(task_summary)
         if task_description:
             logger.info(f"Editing task description to: {task_description}")
             self.wait_for_element(By.ID, "description").clear()
+            time.sleep(1)
             self.wait_for_element(By.ID, "description").send_keys(task_description)
         if status:
             logger.info(f"Setting status to: {status}")
@@ -124,6 +127,7 @@ class TaskPage(BasePage):
         """
         logger.info("Editing task summary to blank")
         self.wait_for_clickable(By.ID, "summary").clear()
+        time.sleep(1)
         self.wait_for_element(By.ID, "description").click()  # Click to trigger any validation
         self.wait_for_clickable(By.XPATH, "//button[contains(text(), 'Update')]").click()
 
@@ -133,6 +137,7 @@ class TaskPage(BasePage):
         """
         logger.info("Editing task description to blank")
         self.wait_for_clickable(By.ID, "description").clear()
+        time.sleep(1)
         self.wait_for_element(By.ID, "summary").click()  # Click to trigger any validation
         self.wait_for_clickable(By.XPATH, "//button[contains(text(), 'Update')]").click()
 
