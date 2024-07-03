@@ -51,6 +51,7 @@ def general_setup_teardown():
     driver.quit()
     logging.info("WebDriver session closed.")
 
+
 @pytest.fixture(scope="function")
 def user_setup_teardown():
     """
@@ -77,6 +78,7 @@ def user_setup_teardown():
     logging.info("Tearing down WebDriver session...")
     driver.quit()
     logging.info("WebDriver session closed.")
+
 
 @pytest.fixture(scope="module")
 def task_setup():
@@ -116,6 +118,7 @@ def task_setup():
     logging.info("Project deleted after task-related module tests.")
     driver.quit()
     logging.info("WebDriver session closed.")
+
 
 @pytest.fixture(scope="function")
 def task_teardown(task_setup):

@@ -150,7 +150,8 @@ class TaskPage(BasePage):
         Returns:
             bool: True if the task is present, False otherwise.
         """
-        logger.info(f"Checking if task '{task_summary}' with description '{task_description}' is present in '{status_column}' column")
+        logger.info(f"Checking if task '{task_summary}' with description '{task_description}' is present in "
+                    f"'{status_column}' column")
         column = self.wait_for_element(By.ID, f"{status_column.lower().replace(' ', '_')}_items")
         child_element = column.find_element(By.XPATH, f".//*[contains(text(), '{task_summary}')]")
         if not child_element:
